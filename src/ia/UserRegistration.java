@@ -51,6 +51,7 @@ public class UserRegistration {
 	 */
 	private void initialize() {
 		frmUnibudget = new JFrame();
+		frmUnibudget.setResizable(false);
 		frmUnibudget.setTitle("UniBudget");
 		frmUnibudget.setBounds(100, 100, 470, 415);
 		frmUnibudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

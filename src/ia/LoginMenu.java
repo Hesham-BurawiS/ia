@@ -15,7 +15,7 @@ import java.awt.Font;
 
 public class LoginMenu {
 
-	private JFrame frame;
+	private JFrame frmUnibudget;
 
 	/**
 	 * Launch the application.
@@ -25,7 +25,7 @@ public class LoginMenu {
 			public void run() {
 				try {
 					LoginMenu window = new LoginMenu();
-					window.frame.setVisible(true);
+					window.frmUnibudget.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -44,35 +44,36 @@ public class LoginMenu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 460, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmUnibudget = new JFrame();
+		frmUnibudget.setTitle("UniBudget");
+		frmUnibudget.setBounds(100, 100, 460, 300);
+		frmUnibudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmUnibudget.getContentPane().setLayout(null);
 		
 		JLabel welcomeLbl = new JLabel("Welcome to UniBudget");
 		welcomeLbl.setBounds(90, 0, 254, 27);
 		welcomeLbl.setFont(new Font("Tahoma", Font.BOLD, 22));
-		frame.getContentPane().add(welcomeLbl);
+		frmUnibudget.getContentPane().add(welcomeLbl);
 		
 		JButton loginBtn = new JButton("Login");
 		loginBtn.setBounds(90, 92, 254, 23);
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserLogin.main(null);
-				frame.dispose();	
+				frmUnibudget.dispose();	
 			}
 		});
-		frame.getContentPane().add(loginBtn);
+		frmUnibudget.getContentPane().add(loginBtn);
 		
 		JButton registrationBtn = new JButton("Register");
 		registrationBtn.setBounds(90, 180, 254, 23);
 		registrationBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserRegistration.main(null);
-				frame.dispose();	
+				frmUnibudget.dispose();	
 			}
 		});
-		frame.getContentPane().add(registrationBtn);
+		frmUnibudget.getContentPane().add(registrationBtn);
 	}
 
 }
