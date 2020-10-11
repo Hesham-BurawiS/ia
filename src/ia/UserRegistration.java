@@ -13,6 +13,16 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.concurrent.TimeUnit;
+import java.sql.ResultSet;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class UserRegistration {
 
@@ -21,7 +31,7 @@ public class UserRegistration {
 	private JTextField lastNameTxt;
 	private JTextField emailTxt;
 	private JPasswordField passwordField;
-	private JPasswordField confrimPasswdField;
+	private JPasswordField confirmPasswdField;
 
 	/**
 	 * Launch the application.
@@ -62,6 +72,11 @@ public class UserRegistration {
 		welcomeLbl.setFont(new Font("Tahoma", Font.BOLD, 18));
 		frmUnibudget.getContentPane().add(welcomeLbl);
 		
+		JLabel notificationLbl = new JLabel("");
+		notificationLbl.setForeground(Color.RED);
+		notificationLbl.setBounds(134, 39, 205, 14);
+		frmUnibudget.getContentPane().add(notificationLbl);
+		
 		JLabel firstNameLbl = new JLabel("First Name");
 		firstNameLbl.setBounds(106, 59, 261, 17);
 		firstNameLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -79,10 +94,10 @@ public class UserRegistration {
 		lastNameLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		lastNameLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUnibudget.getContentPane().add(lastNameLbl);
-		
+
 		lastNameTxt = new JTextField();
 		lastNameTxt.setBounds(106, 131, 261, 20);
-		frmUnibudget.getContentPane().add(lastNameTxt);
+		frmUnibudget.getContentPane().add(lastNameTxt);	
 		lastNameTxt.setColumns(10);
 		
 		JLabel emailLbl = new JLabel("Email");
@@ -94,6 +109,7 @@ public class UserRegistration {
 		emailTxt = new JTextField();
 		emailTxt.setBounds(106, 180, 261, 20);
 		frmUnibudget.getContentPane().add(emailTxt);
+		
 		emailTxt.setColumns(10);
 		
 		JLabel passwordLbl = new JLabel("Password");
@@ -110,16 +126,94 @@ public class UserRegistration {
 		confrimPasswdLbl.setBounds(181, 255, 110, 17);
 		confrimPasswdLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		confrimPasswdLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		frmUnibudget.getContentPane().add(confrimPasswdLbl);
+		frmUnibudget.getContentPane().add(confrimPasswdLbl);	
 		
-		confrimPasswdField = new JPasswordField();
-		confrimPasswdField.setBounds(106, 278, 261, 20);
-		frmUnibudget.getContentPane().add(confrimPasswdField);
+		confirmPasswdField = new JPasswordField();
+		confirmPasswdField.setBounds(106, 278, 261, 20);
+		frmUnibudget.getContentPane().add(confirmPasswdField);		
 		
 		JButton registerBtn = new JButton("Register");
 		registerBtn.setBounds(106, 329, 261, 25);
+		registerBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Must run .getText in function otherwise you get empty vars
+				String firstName = firstNameTxt.getText();
+				String lastName = lastNameTxt.getText();
+				String email = emailTxt.getText();
+				String unHashedPassword = passwordField.getText();
+				String passwordConfirmation = confirmPasswdField.getText();
+				String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+				String hashedPassword = null;
+
+				
+				
+				// Filled in Data check
+				if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || unHashedPassword.isBlank() ) {
+					notificationLbl.setText("Please fill in all fields!");
+					//TODO Stop Function
+				}
+				// Email Validation
+				else if (!email.matches(regex)) {
+					notificationLbl.setText("Please enter a valid email!");
+				}
+				
+				//TODO Add password requirements such as min. characters and alpha-numeric
+				
+				// Password match confirmation 
+				else if (unHashedPassword.equals(passwordConfirmation)) {
+					hashedPassword = BCrypt.hashpw(unHashedPassword, BCrypt.gensalt()); 
+					System.out.println(hashedPassword);
+					notificationLbl.setText("");
+					}
+				else {
+					notificationLbl.setText("Error your passwords don't match!");
+					//TODO Stop Function
+				}
+				
+				
+				
+				Connection conn = null;
+				try {
+				    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget", "hesho" , "cQnfD23b8tiYk!7h");
+				    Statement stmt = null;
+				    ResultSet rs = null;
+				    
+				    
+				    // Inserts data into DB 
+			        String sql = "INSERT INTO users " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+			        //TODO Could use arrays to store and loop chnging i and storing the other data in an array
+			        preparedStatement.setString(1, null);
+			        preparedStatement.setString(2, email);
+			        preparedStatement.setString(3, hashedPassword);
+			        preparedStatement.setString(4, firstName);
+			        preparedStatement.setString(5, lastName);
+			        preparedStatement.setString(6, null);
+			        preparedStatement.setString(7, null);
+			        preparedStatement.setString(8, null);
+			        preparedStatement.setString(9, null);
+			        preparedStatement.setString(10, null);
+			        preparedStatement.executeUpdate(); 
+				    
+			        // Open a dialogue menu or change label so rename it to notificationLbl
+			        notificationLbl.setForeground(Color.GREEN);
+			        notificationLbl.setText("Successfully registered!");
+			        NotifWindow.main(null);
+			        frmUnibudget.dispose();
+				   
+				} catch (SQLException ex) {
+				    // handle any errors
+				    System.out.println("SQLException: " + ex.getMessage());
+				    System.out.println("SQLState: " + ex.getSQLState());
+				    System.out.println("VendorError: " + ex.getErrorCode());
+				}
+			}
+		});
 		registerBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUnibudget.getContentPane().add(registerBtn);
+		
+		
+		
 	}
 
 }
