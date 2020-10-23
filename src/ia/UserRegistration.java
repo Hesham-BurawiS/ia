@@ -162,7 +162,6 @@ public class UserRegistration {
 				// Password match confirmation 
 				else if (unHashedPassword.equals(passwordConfirmation)) {
 					hashedPassword = BCrypt.hashpw(unHashedPassword, BCrypt.gensalt()); 
-					System.out.println(hashedPassword);
 					notificationLbl.setText("");
 					}
 				else {
@@ -180,19 +179,19 @@ public class UserRegistration {
 				    
 				    
 				    // Inserts data into DB 
-			        String sql = "INSERT INTO users " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			        String sql = "INSERT INTO users " + "VALUES (default,?, ?, ?, ?)";
 			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 			        //TODO Could use arrays to store and loop chnging i and storing the other data in an array
-			        preparedStatement.setString(1, null);
-			        preparedStatement.setString(2, email);
-			        preparedStatement.setString(3, hashedPassword);
-			        preparedStatement.setString(4, firstName);
-			        preparedStatement.setString(5, lastName);
-			        preparedStatement.setString(6, null);
-			        preparedStatement.setString(7, null);
-			        preparedStatement.setString(8, null);
-			        preparedStatement.setString(9, null);
-			        preparedStatement.setString(10, null);
+			        //preparedStatement.setString(1, seq.nextVal(););
+			        preparedStatement.setString(1, email);
+			        preparedStatement.setString(2, hashedPassword);
+			        preparedStatement.setString(3, firstName);
+			        preparedStatement.setString(4, lastName);
+//			        preparedStatement.setString(1, email);
+//			        preparedStatement.setString(2, hashedPassword);
+//			        preparedStatement.setString(3, firstName);
+//			        preparedStatement.setString(4, lastName);
+
 			        preparedStatement.executeUpdate(); 
 				    
 			        // Open a dialogue menu or change label so rename it to notificationLbl
