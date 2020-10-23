@@ -1,29 +1,22 @@
 package ia;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
-import javax.swing.JLabel;
+import java.awt.EventQueue;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.awt.event.ActionEvent;
 
-public class ViewUnis {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+
+public class AddUnis {
 
 	private JFrame frmUnibudget;
-	private static int currentChoice;
-	private static JLabel uniNameLbl;
-	private static JLabel currentCity;
-	private static JLabel currentCourse;
-	private static JLabel currentLength;
-	private static JLabel currentCost;
 
 	/**
 	 * Launch the application.
@@ -32,7 +25,7 @@ public class ViewUnis {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ViewUnis window = new ViewUnis();
+					AddUnis window = new AddUnis();
 					window.frmUnibudget.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +37,7 @@ public class ViewUnis {
 	/**
 	 * Create the application.
 	 */
-	public ViewUnis() {
+	public AddUnis() {
 		initialize();
 	}
 
@@ -63,7 +56,7 @@ public class ViewUnis {
 		panel.setLayout(null);
 		
 		
-		uniNameLbl = new JLabel("");
+		JLabel uniNameLbl = new JLabel("");
 		uniNameLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		uniNameLbl.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		uniNameLbl.setBounds(98, 11, 230, 26);
@@ -74,7 +67,7 @@ public class ViewUnis {
 		cityLbl.setBounds(23, 60, 35, 26);
 		panel.add(cityLbl);
 		
-		currentCity = new JLabel("");
+		JTextField currentCity = new JTextField("");
 		currentCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		currentCity.setBounds(55, 60, 217, 26);
 		panel.add(currentCity);
@@ -84,7 +77,7 @@ public class ViewUnis {
 		courseLbl.setBounds(23, 97, 49, 26);
 		panel.add(courseLbl);
 		
-		currentCourse = new JLabel("");
+		JTextField currentCourse = new JTextField("");
 		currentCourse.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		currentCourse.setBounds(74, 97, 207, 26);
 		panel.add(currentCourse);
@@ -94,7 +87,7 @@ public class ViewUnis {
 		lengthLbl.setBounds(23, 134, 49, 26);
 		panel.add(lengthLbl);
 		
-		currentLength = new JLabel("");
+		JTextField currentLength = new JTextField("");
 		currentLength.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		currentLength.setBounds(74, 134, 207, 26);
 		panel.add(currentLength);
@@ -104,26 +97,10 @@ public class ViewUnis {
 		lblCost.setBounds(23, 171, 49, 26);
 		panel.add(lblCost);
 		
-		currentCost = new JLabel("");
+		JTextField currentCost = new JTextField("");
 		currentCost.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		currentCost.setBounds(65, 171, 207, 26);
 		panel.add(currentCost);
-		// Updates the above lables witht the first choice
-		currentChoice = 1;
-		try {
-			String[] currentUni = User.choice("choice"+currentChoice);
-			for (int i = 0; i < currentUni.length; i++) {
-				uniNameLbl.setText(currentUni[2]);
-				currentCity.setText(currentUni[3]);
-				currentCourse.setText(currentUni[4]);
-				currentLength.setText(currentUni[5] + " years");
-				currentCost.setText("£"+currentUni[6]);
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} // End of update
-		
 		
 		JButton menuBtn = new JButton("Menu");
 		menuBtn.addActionListener(new ActionListener() {
@@ -138,23 +115,7 @@ public class ViewUnis {
 		JButton nextBtn = new JButton("Next");
 		nextBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(currentChoice==5) {
-					currentChoice=0;
-				}
-				try {
-					currentChoice++;
-					String[] currentUni = User.choice("choice"+currentChoice);
-					for (int i = 0; i < currentUni.length; i++) {
-						uniNameLbl.setText(currentUni[2]);
-						currentCity.setText(currentUni[3]);
-						currentCourse.setText(currentUni[4]);
-						currentLength.setText(currentUni[5] + " years");
-						currentCost.setText("£"+currentUni[6]);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				//TODO Fill
 			}
 		});
 		nextBtn.setBounds(335, 227, 89, 23);
@@ -163,26 +124,11 @@ public class ViewUnis {
 		JButton previousBtn = new JButton("Previous");
 		previousBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(currentChoice==1) {
-					currentChoice=6;
-				}
-				try {
-					currentChoice--;
-					String[] currentUni = User.choice("choice"+currentChoice);
-					for (int i = 0; i < currentUni.length; i++) {
-						uniNameLbl.setText(currentUni[2]);
-						currentCity.setText(currentUni[3]);
-						currentCourse.setText(currentUni[4]);
-						currentLength.setText(currentUni[5] + " years");
-						currentCost.setText("£"+currentUni[6]);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				//TODO Fill
 			}
 		});
 		previousBtn.setBounds(239, 227, 89, 23);
 		panel.add(previousBtn);
 	}
+
 }

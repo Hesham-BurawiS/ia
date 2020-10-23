@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class MainMenu {
+public class MainMenu extends User{
 
 	private JFrame frmUnibudget;
 
@@ -55,6 +55,12 @@ public class MainMenu {
 		frmUnibudget.getContentPane().add(welcomeLbl);
 		
 		JButton addUniBtn = new JButton("Add a Uni");
+		addUniBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddUnis.main(null);
+				frmUnibudget.dispose();
+			}
+		});
 		addUniBtn.setBounds(10, 51, 130, 23);
 		frmUnibudget.getContentPane().add(addUniBtn);
 		
@@ -78,6 +84,7 @@ public class MainMenu {
 				LoginMenu.main(null);
 				frmUnibudget.dispose();
 				//TODO Set everything in user to NUll otherwise if they have a value then it could overlap
+				// Tested for viewUnis and no need because it's linked to the id
 			}
 		});
 		logoutBtn.setBounds(153, 277, 130, 23);
