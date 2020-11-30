@@ -5,7 +5,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,9 +24,13 @@ import java.awt.event.FocusEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.ImageIcon;
+import javax.swing.JProgressBar;
 
 public class AddUnis {
+	
 
+	
 	public static String[] legacyComplier() {
 		String [] legacy = new String[371];
 		String line = "";  
@@ -40,6 +48,12 @@ public class AddUnis {
 		return legacy;
 	}
 	private JFrame frmUnibudget;
+	private JComboBox UCASCodeComboBox;
+	private JLabel uniNameLbl;
+	private JLabel loadingWheel; 
+	private JComboBox campusComboBox;
+	private JPanel panel;
+
 
 	/**
 	 * Launch the application.
@@ -73,16 +87,22 @@ public class AddUnis {
 		frmUnibudget.setBounds(100, 100, 500, 300);
 		frmUnibudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBorder(null);
 		frmUnibudget.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
+		loadingWheel = new JLabel("");
+		loadingWheel.setBounds(171, 98, 64, 64);
+		panel.add(loadingWheel);
+		loadingWheel.setIcon(new ImageIcon(AddUnis.class.getResource("/resources/loadingWheel.gif")));
+		loadingWheel.setVisible(false);
 		
-		JLabel uniNameLbl = new JLabel("");
+		
+		uniNameLbl = new JLabel("");
 		uniNameLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		uniNameLbl.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		uniNameLbl.setBounds(11, 24, 449, 26);
+		uniNameLbl.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		uniNameLbl.setBounds(11, 11, 449, 39);
 		panel.add(uniNameLbl);
 		 
 		JLabel cityLbl = new JLabel("City:");
@@ -92,7 +112,7 @@ public class AddUnis {
 		
 		JTextField currentCity = new JTextField("");
 		currentCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		currentCity.setBounds(99, 61, 217, 26);
+		currentCity.setBounds(99, 61, 207, 26);
 		panel.add(currentCity);
 		
 		JLabel courseLbl = new JLabel("Course Code:");
@@ -157,29 +177,74 @@ public class AddUnis {
 		cancelBtn.setBounds(286, 227, 89, 23);
 		panel.add(cancelBtn);
 		
-		JLabel uniCodeLbl = new JLabel("University UCAS Code");
-		uniCodeLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		uniCodeLbl.setBounds(328, 57, 156, 33);
-		panel.add(uniCodeLbl);
-		
-		JComboBox UCASCodeComboBox = new JComboBox();
-		UCASCodeComboBox.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				// Search db for uni corrosponding to LC and update the uniLbl and add option for campus
-			}
-		});
-		UCASCodeComboBox.setModel(new DefaultComboBoxModel(legacyComplier()));
-		UCASCodeComboBox.setBounds(328, 101, 132, 22);
-		panel.add(UCASCodeComboBox);
-		
 		JLabel campusLbl = new JLabel("Campus");
 		campusLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		campusLbl.setBounds(328, 133, 156, 33);
 		panel.add(campusLbl);
 		
-		JComboBox campusComboBox = new JComboBox();
+		campusComboBox = new JComboBox();
+		campusComboBox.setModel(new DefaultComboBoxModel(new String[] {"-"}));
 		campusComboBox.setBounds(328, 175, 132, 22);
 		panel.add(campusComboBox);
+		
+		JLabel uniCodeLbl = new JLabel("University UCAS Code");
+		uniCodeLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		uniCodeLbl.setBounds(328, 57, 156, 33);
+		panel.add(uniCodeLbl);
+		
+		
+		UCASCodeComboBox = new JComboBox();
+		UCASCodeComboBox.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				
+				 // This code isn't runinning because the thing doesn't display until it pops up
+				panel.revalidate();
+				panel.repaint();
+				
+				String codeChoice = (String) UCASCodeComboBox.getSelectedItem();
+				String [] temp = new String[40]; //Set to 40 to account for all possible venues
+				int count = 0;
+				// Search db for uni corrosponding to LC and update the uniLbl and add option for campus
+				// Database Connection to verify user information
+				Connection conn = null;
+				try {
+				    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
+				    Statement stmt = null;
+				    ResultSet rs = null;
+				    
+				    stmt = conn.createStatement();
+				    rs = stmt.executeQuery("SELECT * FROM legacyCodes WHERE LEGACY_CODE = " + "'" + codeChoice + "'");
+				    while (rs.next()) {
+				    	temp[count] = rs.getString("VENUE");
+				    	uniNameLbl.setText(rs.getString("NAME"));
+				       count++;
+				        }
+				    String [] venues = new String[count]; //Recreates array with accurate size to make sure combobox has no null values
+				    for (int i = 0; i < venues.length; i++) {
+						venues[i] = temp[i];
+					}
+				    
+				    
+				    campusComboBox.setModel(new DefaultComboBoxModel(venues));
+				    loadingWheel.setVisible(false);
+				
+			} catch (SQLException ex) {
+			    // handle any errors
+			    System.out.println("SQLException: " + ex.getMessage());
+			    System.out.println("SQLState: " + ex.getSQLState());
+			    System.out.println("VendorError: " + ex.getErrorCode());
+			}
+			}
+
+
+		});
+		UCASCodeComboBox.setModel(new DefaultComboBoxModel(legacyComplier()));
+		UCASCodeComboBox.setBounds(328, 101, 132, 22);
+		panel.add(UCASCodeComboBox);
+		
+
+		
+
 	}
 }
