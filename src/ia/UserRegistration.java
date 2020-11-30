@@ -23,6 +23,10 @@ import java.util.concurrent.TimeUnit;
 import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class UserRegistration {
 
@@ -32,6 +36,7 @@ public class UserRegistration {
 	private JTextField emailTxt;
 	private JPasswordField passwordField;
 	private JPasswordField confirmPasswdField;
+	private JLabel notificationLbl;
 
 	/**
 	 * Launch the application.
@@ -61,6 +66,18 @@ public class UserRegistration {
 	 */
 	private void initialize() {
 		frmUnibudget = new JFrame();
+		frmUnibudget.addKeyListener(new KeyAdapter() {
+		});
+		frmUnibudget.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				LoginMenu.main(null);
+			}
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				LoginMenu.main(null);
+			}
+		});
 		frmUnibudget.setResizable(false);
 		frmUnibudget.setTitle("UniBudget");
 		frmUnibudget.setBounds(100, 100, 470, 415);
@@ -72,7 +89,7 @@ public class UserRegistration {
 		welcomeLbl.setFont(new Font("Tahoma", Font.BOLD, 18));
 		frmUnibudget.getContentPane().add(welcomeLbl);
 		
-		JLabel notificationLbl = new JLabel("");
+		notificationLbl = new JLabel("");
 		notificationLbl.setForeground(Color.RED);
 		notificationLbl.setBounds(134, 39, 205, 14);
 		frmUnibudget.getContentPane().add(notificationLbl);
@@ -90,7 +107,7 @@ public class UserRegistration {
 		firstNameTxt.setColumns(10);
 		
 		JLabel lastNameLbl = new JLabel("Last Name");
-		lastNameLbl.setBounds(204, 108, 64, 17);
+		lastNameLbl.setBounds(106, 108, 261, 17);
 		lastNameLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		lastNameLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUnibudget.getContentPane().add(lastNameLbl);
@@ -101,7 +118,7 @@ public class UserRegistration {
 		lastNameTxt.setColumns(10);
 		
 		JLabel emailLbl = new JLabel("Email");
-		emailLbl.setBounds(221, 157, 31, 17);
+		emailLbl.setBounds(106, 157, 261, 17);
 		emailLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		emailLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUnibudget.getContentPane().add(emailLbl);
@@ -210,6 +227,17 @@ public class UserRegistration {
 		});
 		registerBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUnibudget.getContentPane().add(registerBtn);
+		
+		frmUnibudget.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				LoginMenu.main(null);
+			}
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				LoginMenu.main(null);
+			}
+		});
 		
 		
 		
