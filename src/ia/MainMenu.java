@@ -100,6 +100,7 @@ public class MainMenu extends User{
 		frmUnibudget.getContentPane().add(viewPropertiesBtn);
 		
 		JButton removeUniBtn = new JButton("Remove a Uni");
+		removeUniBtn.setEnabled(false);
 		removeUniBtn.setBounds(294, 51, 130, 23);
 		frmUnibudget.getContentPane().add(removeUniBtn);
 	}

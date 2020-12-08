@@ -18,6 +18,7 @@ public class User {
 	protected static String choice3;
 	protected static String choice4;
 	protected static String choice5;
+	protected static int totalChoices;
 
 	public User() {
 		// TODO Auto-generated constructor stub
@@ -30,12 +31,13 @@ public class User {
 		String choice3;
 		String choice4;
 		String choice5;
+		int totalChoices;
 
 		
 	}
 	public static String[] choice(String table) throws SQLException {
 		String[] choiceArr = new String [7];
-		String sql = "SELECT * FROM " + table + " WHERE id = " + id;
+		String sql = "SELECT * FROM " + table + " WHERE id = " + 7;
 		Connection conn = null;
 		try {
 		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
@@ -56,33 +58,11 @@ public class User {
 		
 	}
 
-//	private void DatabaseConnection(String sql) {
-//		// TODO Auto-generated method stub
-//		Connection conn = null;
-//		try {
-//		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
-//		    Statement stmt = null;
-//		    ResultSet rs = null;
-//		    
-//		    
-//		    stmt = conn.createStatement();
-//		    rs = stmt.executeQuery(sql);
-//		    while (rs.next()) {
-//
-//		        }
-//
-//	} catch (SQLException ex) {
-//	    // handle any errors
-//	    System.out.println("SQLException: " + ex.getMessage());
-//	    System.out.println("SQLState: " + ex.getSQLState());
-//	    System.out.println("VendorError: " + ex.getErrorCode());
-//	}
-//};
 		
 	
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
-		choice("choice1");
+		
 	}
 
 }

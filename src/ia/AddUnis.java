@@ -14,6 +14,7 @@ import java.sql.Statement;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -22,10 +23,18 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
+
+import java.nio.charset.StandardCharsets;
 
 public class AddUnis {
 	
@@ -36,13 +45,14 @@ public class AddUnis {
 		String line = "";  
 		int count = 0;
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\hesho\\eclipse-workspace\\HeshoLabs\\src\\csv\\legacy.csv"));  
+			File file = new File(AddUnis.class.getResource("/resources/legacy.csv").toURI());
+			BufferedReader br = new BufferedReader(new FileReader(file));  
 			while ((line = br.readLine()) != null) {  //returns a Boolean value  
 				legacy[count] = line;
 				count++;
 			}  
 		}   
-		catch (IOException e)   {  
+		catch (IOException | URISyntaxException e)   {  
 		e.printStackTrace();  
 		}  
 		return legacy;
@@ -159,6 +169,10 @@ public class AddUnis {
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//TODO Check if the user has 5 uni choices
+				User.totalChoices=5;
+				if (User.totalChoices==5) {
+					JOptionPane.showMessageDialog(frmUnibudget, "You've reached the maximum number of choices (5)", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 				//TODO Check if this option is already added
 				
 				
@@ -198,15 +212,10 @@ public class AddUnis {
 			@Override
 			public void focusLost(FocusEvent e) {
 				
-				 // This code isn't runinning because the thing doesn't display until it pops up
-				panel.revalidate();
-				panel.repaint();
-				
 				String codeChoice = (String) UCASCodeComboBox.getSelectedItem();
 				String [] temp = new String[40]; //Set to 40 to account for all possible venues
 				int count = 0;
-				// Search db for uni corrosponding to LC and update the uniLbl and add option for campus
-				// Database Connection to verify user information
+				// Database Connection to verify find uni
 				Connection conn = null;
 				try {
 				    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
@@ -227,7 +236,6 @@ public class AddUnis {
 				    
 				    
 				    campusComboBox.setModel(new DefaultComboBoxModel(venues));
-				    loadingWheel.setVisible(false);
 				
 			} catch (SQLException ex) {
 			    // handle any errors

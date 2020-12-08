@@ -78,7 +78,7 @@ public class UserLogin extends User{
 		frmUnibudget.getContentPane().add(notificationLbl);
 		
 		JLabel emailLbl = new JLabel("Email");
-		emailLbl.setBounds(224, 59, 31, 17);
+		emailLbl.setBounds(131, 59, 218, 17);
 		emailLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		emailLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUnibudget.getContentPane().add(emailLbl);
@@ -134,14 +134,21 @@ public class UserLogin extends User{
 					        	notificationLbl.setText("Invalid email or password!");
 					        }
 					        else {
-					        	notificationLbl.setText("");
+					        	notificationLbl.setText("");	
 					        	// Set user data but do I want to put it in user file and use as global var and build an object?
 					        	//User.main(null);
-					        	User.firstName = rs.getString("firstName");
-					        	User.lastName = rs.getString("lastName");
-					        	User.email = email;
-					        	User.id = rs.getInt("id");
-					        	//User.uni1 = rs.getString("uni1");
+					        	firstName = rs.getString("firstName");
+					        	lastName = rs.getString("lastName");
+					        	User.email = email; // The variable is already used here that's why User.
+					        	id = rs.getInt("id");
+					        	int choiceCount = 1;
+					    		totalChoices = 5; 
+					    		while (choiceCount <=5) {
+					    			String [] arr = choice("choice"+choiceCount);
+					    			if(arr[0] == null) {
+					    				totalChoices--; }
+					    			choiceCount++;			
+					    		}
 					        	MainMenu.main(null);
 					        	frmUnibudget.dispose();
 					        }
@@ -178,7 +185,7 @@ public class UserLogin extends User{
 				// Filled in Data check
 				if (email.isBlank() || unHashedPassword.isBlank() ) {
 					notificationLbl.setText("Please fill in all fields!");
-					//TODO Stop Function
+					//TODO Stop Function change to while?
 				}
 				// Email Validation
 				else if (!email.matches(regex)) {

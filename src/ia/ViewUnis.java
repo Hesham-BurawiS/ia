@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 public class ViewUnis {
 
@@ -25,7 +26,7 @@ public class ViewUnis {
 	private static JLabel currentLength;
 	private static JLabel currentCost;
 
-	/**
+	/**	
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
@@ -138,7 +139,7 @@ public class ViewUnis {
 		JButton nextBtn = new JButton("Next");
 		nextBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(currentChoice==5) {
+				if(currentChoice==5 || currentChoice==User.totalChoices) {
 					currentChoice=0;
 				}
 				try {
@@ -164,7 +165,7 @@ public class ViewUnis {
 		previousBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(currentChoice==1) {
-					currentChoice=6;
+					currentChoice=User.totalChoices+1; //Sets it to the max number adjusting for the subtraction below
 				}
 				try {
 					currentChoice--;
@@ -184,5 +185,10 @@ public class ViewUnis {
 		});
 		previousBtn.setBounds(239, 227, 89, 23);
 		panel.add(previousBtn);
+		
+		JButton btnNewButton = new JButton("");
+		btnNewButton.setIcon(new ImageIcon(ViewUnis.class.getResource("/resources/red-x.png")));
+		btnNewButton.setBounds(360, 11, 64, 64);
+		panel.add(btnNewButton);
 	}
 }
