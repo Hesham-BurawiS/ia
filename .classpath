@@ -11,10 +11,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/hesho/git/ia/mysql-connector-java-8.0.18.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="mysql-connector-java-8.0.18.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
