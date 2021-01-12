@@ -36,8 +36,8 @@ public class User {
 		
 	}
 	public static String[] choice(String table) throws SQLException {
-		String[] choiceArr = new String [7];
-		String sql = "SELECT * FROM " + table + " WHERE id = " + 7;
+		String[] choiceArr = new String [8];
+		String sql = "SELECT * FROM " + table + " WHERE id = " + id; //TODO remove this when in prod
 		Connection conn = null;
 		try {
 		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
@@ -62,7 +62,10 @@ public class User {
 	
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
-		
+		String [] arr = choice("choice2");
+		for (int i = 0; i < arr.length; i++) {
+			System.out.println(arr[i]);
+		}
 	}
 
 }

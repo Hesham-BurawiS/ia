@@ -8,11 +8,17 @@ import java.awt.BorderLayout;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
@@ -25,6 +31,8 @@ public class ViewUnis {
 	private static JLabel currentCourse;
 	private static JLabel currentLength;
 	private static JLabel currentCost;
+	private static JLabel currentUC;
+	private static JLabel currentVenue;
 
 	/**	
 	 * Launch the application.
@@ -109,19 +117,42 @@ public class ViewUnis {
 		currentCost.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		currentCost.setBounds(65, 171, 207, 26);
 		panel.add(currentCost);
+		
+		JLabel venueLbl = new JLabel("Venue:");
+		venueLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		venueLbl.setBounds(335, 105, 89, 14);
+		panel.add(venueLbl);
+		
+		currentVenue = new JLabel("");
+		currentVenue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		currentVenue.setBounds(335, 130, 89, 14);
+		panel.add(currentVenue);
+		
+		JLabel UniCodeLbl = new JLabel("Uni Code:");
+		UniCodeLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		UniCodeLbl.setBounds(335, 157, 89, 14);
+		panel.add(UniCodeLbl);
+		
+		currentUC = new JLabel("");
+		currentUC.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		currentUC.setBounds(335, 182, 89, 14);
+		panel.add(currentUC);
+		
 		// Updates the above lables witht the first choice
 		currentChoice = 1;
 		try {
 			String[] currentUni = User.choice("choice"+currentChoice);
 			for (int i = 0; i < currentUni.length; i++) {
+				// TODO Turn this into a fucking function KEEP YOUR CODE DRY THIS IS WET AS SHIT
+				currentUC.setText(currentUni[1]);
 				uniNameLbl.setText(currentUni[2]);
 				currentCity.setText(currentUni[3]);
 				currentCourse.setText(currentUni[4]);
 				currentLength.setText(currentUni[5] + " years");
 				currentCost.setText("£"+currentUni[6]);
+				currentVenue.setText(currentUni[7]);
 			}
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} // End of update
 		
@@ -146,11 +177,13 @@ public class ViewUnis {
 					currentChoice++;
 					String[] currentUni = User.choice("choice"+currentChoice);
 					for (int i = 0; i < currentUni.length; i++) {
+						currentUC.setText(currentUni[1]);
 						uniNameLbl.setText(currentUni[2]);
 						currentCity.setText(currentUni[3]);
 						currentCourse.setText(currentUni[4]);
 						currentLength.setText(currentUni[5] + " years");
 						currentCost.setText("£"+currentUni[6]);
+						currentVenue.setText(currentUni[7]);
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -171,11 +204,13 @@ public class ViewUnis {
 					currentChoice--;
 					String[] currentUni = User.choice("choice"+currentChoice);
 					for (int i = 0; i < currentUni.length; i++) {
+						currentUC.setText(currentUni[1]);
 						uniNameLbl.setText(currentUni[2]);
 						currentCity.setText(currentUni[3]);
 						currentCourse.setText(currentUni[4]);
 						currentLength.setText(currentUni[5] + " years");
 						currentCost.setText("£"+currentUni[6]);
+						currentVenue.setText(currentUni[7]);
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -187,8 +222,31 @@ public class ViewUnis {
 		panel.add(previousBtn);
 		
 		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int removalConfirmation = JOptionPane.showConfirmDialog(frmUnibudget, "Are you sure you would like to remove" + 
+															uniNameLbl.getText(), "Confirm Removal?", JOptionPane.YES_NO_OPTION);
+				if (removalConfirmation == 0) { // 0 means user has selected yes
+					Connection conn = null;
+					try {
+					    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
+					    Statement stmt = conn.createStatement();					    					    
+					    stmt.executeUpdate("DELETE FROM choice" + currentChoice + " WHERE id = " + User.id);
+					    User.totalChoices--;
+
+				} catch (SQLException ex) {
+				    // handle any errors
+				    System.out.println("SQLException: " + ex.getMessage());
+				    System.out.println("SQLState: " + ex.getSQLState());
+				    System.out.println("VendorError: " + ex.getErrorCode());
+				}
+				}
+			}
+		});
 		btnNewButton.setIcon(new ImageIcon(ViewUnis.class.getResource("/resources/red-x.png")));
 		btnNewButton.setBounds(360, 11, 64, 64);
 		panel.add(btnNewButton);
+		
+
 	}
 }

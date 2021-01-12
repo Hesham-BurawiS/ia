@@ -163,7 +163,7 @@ public class UserRegistration {
 				String hashedPassword = null;
 
 				
-				
+				//TODO Change these ifs to whiles
 				// Filled in Data check
 				if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || unHashedPassword.isBlank() ) {
 					notificationLbl.setText("Please fill in all fields!");
@@ -188,26 +188,20 @@ public class UserRegistration {
 				
 				
 				
-				Connection conn = null;
+				
 				try {
-				    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget", "hesho" , "cQnfD23b8tiYk!7h");
-				    Statement stmt = null;
-				    ResultSet rs = null;
-				    
+					
+				   Connection conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget", "hesho" , "cQnfD23b8tiYk!7h");
 				    
 				    // Inserts data into DB 
 			        String sql = "INSERT INTO users " + "VALUES (default,?, ?, ?, ?)";
 			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-			        //TODO Could use arrays to store and loop chnging i and storing the other data in an array
+			        //TODO Could use arrays to store and loop changing i and storing the other data in an array
 			        //preparedStatement.setString(1, seq.nextVal(););
 			        preparedStatement.setString(1, email);
 			        preparedStatement.setString(2, hashedPassword);
 			        preparedStatement.setString(3, firstName);
 			        preparedStatement.setString(4, lastName);
-//			        preparedStatement.setString(1, email);
-//			        preparedStatement.setString(2, hashedPassword);
-//			        preparedStatement.setString(3, firstName);
-//			        preparedStatement.setString(4, lastName);
 
 			        preparedStatement.executeUpdate(); 
 				    

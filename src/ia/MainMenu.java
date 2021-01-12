@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -67,8 +68,13 @@ public class MainMenu extends User{
 		JButton viewUniBtn = new JButton("View your Unis");
 		viewUniBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (User.totalChoices != 0 ) {
 				ViewUnis.main(null);
-				frmUnibudget.dispose();
+				frmUnibudget.dispose(); }
+				else {
+					JOptionPane.showMessageDialog(frmUnibudget, "You currently have no universities.\n Please add one first.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		viewUniBtn.setBounds(10, 145, 130, 23);

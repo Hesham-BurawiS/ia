@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -63,8 +64,14 @@ public class AddUnis {
 	private JLabel loadingWheel; 
 	private JComboBox campusComboBox;
 	private JPanel panel;
-
-
+	private String codeChoice;
+	private String uniName;
+	
+	private JTextField courseTxt;
+	private JTextField cityTxt;
+	private JTextField lenTxt;
+	private JTextField costTxt;	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -120,76 +127,40 @@ public class AddUnis {
 		cityLbl.setBounds(49, 133, 35, 26);
 		panel.add(cityLbl);
 		
-		JTextField currentCity = new JTextField("");
-		currentCity.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		currentCity.setBounds(99, 61, 207, 26);
-		panel.add(currentCity);
+		courseTxt = new JTextField("");
+		courseTxt.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		courseTxt.setBounds(99, 61, 207, 26);
+		panel.add(courseTxt);
 		
 		JLabel courseLbl = new JLabel("Course Code:");
 		courseLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		courseLbl.setBounds(11, 60, 88, 26);
 		panel.add(courseLbl);
 		
-		JTextField currentCourse = new JTextField("");
-		currentCourse.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		currentCourse.setBounds(98, 98, 207, 26);
-		panel.add(currentCourse);
+		lenTxt = new JTextField("");
+		lenTxt.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lenTxt.setBounds(98, 98, 207, 26);
+		panel.add(lenTxt);
 		
 		JLabel lengthLbl = new JLabel("Length:");
 		lengthLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lengthLbl.setBounds(39, 96, 49, 26);
 		panel.add(lengthLbl);
 		
-		JTextField currentLength = new JTextField("");
-		currentLength.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		currentLength.setBounds(98, 134, 207, 26);
-		panel.add(currentLength);
+		cityTxt = new JTextField("");
+		cityTxt.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cityTxt.setBounds(98, 134, 207, 26);
+		panel.add(cityTxt);
 		
 		JLabel lblCost = new JLabel("Cost:");
 		lblCost.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCost.setBounds(44, 171, 35, 26);
-		panel.add(lblCost);
+		panel.add(lblCost);	
 		
-		JTextField currentCost = new JTextField("");
-		currentCost.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		currentCost.setBounds(98, 172, 207, 26);
-		panel.add(currentCost);
-		
-		JButton menuBtn = new JButton("Menu");
-		menuBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MainMenu.main(null);
-				frmUnibudget.dispose();
-			}
-		});
-		menuBtn.setBounds(10, 227, 89, 23);
-		panel.add(menuBtn);
-		
-		JButton addBtn = new JButton("Add");
-		addBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//TODO Check if the user has 5 uni choices
-				User.totalChoices=5;
-				if (User.totalChoices==5) {
-					JOptionPane.showMessageDialog(frmUnibudget, "You've reached the maximum number of choices (5)", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-				//TODO Check if this option is already added
-				
-				
-			}
-		});
-		addBtn.setBounds(385, 227, 89, 23);
-		panel.add(addBtn);
-		
-		JButton cancelBtn = new JButton("Cancel");
-		cancelBtn.setEnabled(false);
-		cancelBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//TODO Fill
-			}
-		});
-		cancelBtn.setBounds(286, 227, 89, 23);
-		panel.add(cancelBtn);
+		costTxt = new JTextField("");
+		costTxt.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		costTxt.setBounds(98, 172, 207, 26);
+		panel.add(costTxt);
 		
 		JLabel campusLbl = new JLabel("Campus");
 		campusLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -212,7 +183,7 @@ public class AddUnis {
 			@Override
 			public void focusLost(FocusEvent e) {
 				
-				String codeChoice = (String) UCASCodeComboBox.getSelectedItem();
+				codeChoice = (String) UCASCodeComboBox.getSelectedItem();
 				String [] temp = new String[40]; //Set to 40 to account for all possible venues
 				int count = 0;
 				// Database Connection to verify find uni
@@ -229,6 +200,7 @@ public class AddUnis {
 				    	uniNameLbl.setText(rs.getString("NAME"));
 				       count++;
 				        }
+				    uniName = uniNameLbl.getText();
 				    String [] venues = new String[count]; //Recreates array with accurate size to make sure combobox has no null values
 				    for (int i = 0; i < venues.length; i++) {
 						venues[i] = temp[i];
@@ -250,6 +222,80 @@ public class AddUnis {
 		UCASCodeComboBox.setModel(new DefaultComboBoxModel(legacyComplier()));
 		UCASCodeComboBox.setBounds(328, 101, 132, 22);
 		panel.add(UCASCodeComboBox);
+		
+		JButton menuBtn = new JButton("Menu");
+		menuBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainMenu.main(null);
+				frmUnibudget.dispose();
+			}
+		});
+		menuBtn.setBounds(10, 227, 89, 23);
+		panel.add(menuBtn);
+		
+		JButton addBtn = new JButton("Add");
+		addBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				//TODO Add to total uni count
+				if (User.totalChoices==5) {
+					JOptionPane.showMessageDialog(frmUnibudget, "You've reached the maximum number of choices (5)", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				//TODO Check if this option is already added or maybe nah
+				try {
+				Connection conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
+				
+				int nextChoice = User.totalChoices+1;
+				int cost = 9250; // Home fees
+				int length = 3; // Standard BA
+				try {
+					 cost = Integer.parseInt(costTxt.getText());
+					 length = Integer.parseInt(lenTxt.getText());
+				} catch (NumberFormatException nfe) {
+					System.out.println("NumberFormatException: " + nfe.getMessage());
+				}
+				
+				 // Inserts data into DB 
+		        String sql = "INSERT INTO choice" + nextChoice + " VALUES (?,?,?,?,?,?,?,?)";
+		        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		        //TODO Could use arrays to store and loop changing i and storing the other data in an array
+		        //preparedStatement.setString(1, seq.nextVal(););
+		        //currentCity = cityTxt.getText();
+
+		        preparedStatement.setInt(1, User.id);		       
+		        preparedStatement.setString(2, "C05");
+		        preparedStatement.setString(3, uniName);
+		        preparedStatement.setString(4, cityTxt.getText());
+		        preparedStatement.setString(5, courseTxt.getText());
+		        preparedStatement.setInt(6, length);
+		        preparedStatement.setInt(7, cost);
+		        preparedStatement.setString(8, (String) campusComboBox.getSelectedItem());
+		        User.totalChoices++;
+		        
+		        preparedStatement.executeUpdate(); 
+				
+				
+				} catch (SQLException ex) {
+					 System.out.println("SQLException: " + ex.getMessage());
+					 System.out.println("SQLState: " + ex.getSQLState());
+					 System.out.println("VendorError: " + ex.getErrorCode());
+				}
+				
+			}
+		});
+		addBtn.setBounds(385, 227, 89, 23);
+		panel.add(addBtn);
+		
+		JButton cancelBtn = new JButton("Cancel");
+		cancelBtn.setEnabled(false);
+		cancelBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO Fill
+			}
+		});
+		cancelBtn.setBounds(286, 227, 89, 23);
+		panel.add(cancelBtn);
+		
+		
 		
 
 		
