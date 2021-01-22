@@ -102,6 +102,12 @@ public class MainMenu extends User{
 		frmUnibudget.getContentPane().add(spareBtn);
 		
 		JButton viewPropertiesBtn = new JButton("View Properties");
+		viewPropertiesBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Property.main(null);
+				frmUnibudget.dispose();
+			}
+		});
 		viewPropertiesBtn.setBounds(294, 145, 130, 23);
 		frmUnibudget.getContentPane().add(viewPropertiesBtn);
 		

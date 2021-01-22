@@ -262,7 +262,7 @@ public class AddUnis {
 		        //currentCity = cityTxt.getText();
 
 		        preparedStatement.setInt(1, User.id);		       
-		        preparedStatement.setString(2, "C05");
+		        preparedStatement.setString(2, codeChoice);
 		        preparedStatement.setString(3, uniName);
 		        preparedStatement.setString(4, cityTxt.getText());
 		        preparedStatement.setString(5, courseTxt.getText());
