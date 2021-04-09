@@ -18,6 +18,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -61,7 +66,6 @@ public class AddUnis {
 	private JFrame frmUnibudget;
 	private JComboBox UCASCodeComboBox;
 	private JLabel uniNameLbl;
-	private JLabel loadingWheel; 
 	private JComboBox campusComboBox;
 	private JPanel panel;
 	private String codeChoice;
@@ -109,12 +113,6 @@ public class AddUnis {
 		frmUnibudget.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		loadingWheel = new JLabel("");
-		loadingWheel.setBounds(171, 98, 64, 64);
-		panel.add(loadingWheel);
-		loadingWheel.setIcon(new ImageIcon(AddUnis.class.getResource("/resources/loadingWheel.gif")));
-		loadingWheel.setVisible(false);
-		
 		
 		uniNameLbl = new JLabel("");
 		uniNameLbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -148,6 +146,7 @@ public class AddUnis {
 		panel.add(lengthLbl);
 		
 		cityTxt = new JTextField("");
+		cityTxt.setEnabled(false);
 		cityTxt.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		cityTxt.setBounds(98, 134, 207, 26);
 		panel.add(cityTxt);
@@ -206,8 +205,34 @@ public class AddUnis {
 						venues[i] = temp[i];
 					}
 				    
-				    
 				    campusComboBox.setModel(new DefaultComboBoxModel(venues));
+				    
+				    try {
+						
+						String formatedUniName = uniName.replaceAll("\\s","%20");
+						
+						String APIkey = "AIzaSyA0SQ2rQ94n57EEJkZ_eKZ6cNdgCCu1r1g";
+						URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address="+formatedUniName+"&key=AIzaSyA0SQ2rQ94n57EEJkZ_eKZ6cNdgCCu1r1g");
+						System.out.println(url);
+						BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+						String jsonString = "";
+						String strTemp = "";
+						
+						while (null != (strTemp = br.readLine())) {
+							jsonString +=  strTemp;
+						}
+						
+						JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
+						JsonArray resultsArray = jsonObject.getAsJsonArray("results");
+						JsonObject resultsObject = (JsonObject) resultsArray.get(0);
+						JsonArray addressArray = resultsObject.getAsJsonArray("address_components");
+						int addArrLen = addressArray.size() - 1; // Different places have a different array size so this is to always get the post code
+						cityTxt.setText(addressArray.get(1).getAsJsonObject().get("long_name").getAsString());
+						cityTxt.setEnabled(true);
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+				    
 				
 			} catch (SQLException ex) {
 			    // handle any errors
@@ -272,6 +297,9 @@ public class AddUnis {
 		        User.totalChoices++;
 		        
 		        preparedStatement.executeUpdate(); 
+		        JOptionPane.showMessageDialog(frmUnibudget, "You've successfully added a university", "Success", JOptionPane.INFORMATION_MESSAGE);
+		        frmUnibudget.dispose();
+		        MainMenu.main(null);
 				
 				
 				} catch (SQLException ex) {

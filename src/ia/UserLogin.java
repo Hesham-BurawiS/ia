@@ -143,11 +143,35 @@ public class UserLogin extends User{
 					        	id = rs.getInt("id");
 					        	int choiceCount = 1;
 					    		totalChoices = 5; 
+					    		String UniNames [] = new String [5];
 					    		while (choiceCount <=5) {
 					    			String [] arr = choice("choice"+choiceCount);
 					    			if(arr[0] == null) {
 					    				totalChoices--; }
+					    			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer ex
 					    			choiceCount++;			
+					    		}
+					    		
+
+					    		User.arrayOfUnis = new String[totalChoices];
+					    		for (int i = 0; i < totalChoices; i++) {
+					    			User.arrayOfUnis[i] = UniNames[i];
+					    		}
+					    		
+					    		if(UniNames[0] != null) {
+					    			User.choice1 = UniNames[0];
+					    		}
+					    		if(UniNames[1] != null) {
+					    			User.choice2 = UniNames[1];
+					    		}
+					    		if(UniNames[2] != null) {
+					    			User.choice3 = UniNames[2];
+					    		}
+					    		if(UniNames[3] != null) {
+					    			User.choice4 = UniNames[3];
+					    		}
+					    		if(UniNames[4] != null) {
+					    			User.choice5 = UniNames[4];
 					    		}
 					        	MainMenu.main(null);
 					        	frmUnibudget.dispose();
@@ -218,7 +242,38 @@ public class UserLogin extends User{
 				        	User.lastName = rs.getString("lastName");
 				        	User.email = email;
 				        	User.id = rs.getInt("id");
-				        	//User.uni1 = rs.getString("uni1");
+				        	int choiceCount = 1;
+				    		totalChoices = 5; 
+				    		String UniNames [] = new String [5];
+				    		while (choiceCount <=5) {
+				    			String [] arr = choice("choice"+choiceCount);
+				    			if(arr[0] == null) {
+				    				totalChoices--; }
+				    			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer ex
+				    			choiceCount++;			
+				    		}
+				    		
+
+				    		User.arrayOfUnis = new String[totalChoices];
+				    		for (int i = 0; i < totalChoices; i++) {
+				    			User.arrayOfUnis[i] = UniNames[i];
+				    		}
+				    		
+				    		if(UniNames[0] != null) {
+				    			User.choice1 = UniNames[0];
+				    		}
+				    		if(UniNames[1] != null) {
+				    			User.choice2 = UniNames[1];
+				    		}
+				    		if(UniNames[2] != null) {
+				    			User.choice3 = UniNames[2];
+				    		}
+				    		if(UniNames[3] != null) {
+				    			User.choice4 = UniNames[3];
+				    		}
+				    		if(UniNames[4] != null) {
+				    			User.choice5 = UniNames[4];
+				    		}
 				        	MainMenu.main(null);
 				        	frmUnibudget.dispose();
 				        }
@@ -243,5 +298,4 @@ public class UserLogin extends User{
 
 		
 	}
-
 }

@@ -19,6 +19,7 @@ public class User {
 	protected static String choice4;
 	protected static String choice5;
 	protected static int totalChoices;
+	protected static String[] arrayOfUnis;
 
 	public User() {
 		// TODO Auto-generated constructor stub
@@ -31,6 +32,7 @@ public class User {
 		String choice3;
 		String choice4;
 		String choice5;
+		String [] arrayOfUnis;
 		int totalChoices;
 
 		
@@ -61,11 +63,7 @@ public class User {
 		
 	
 	public static void main(String[] args) throws SQLException {
-		// TODO Auto-generated method stub
-		String [] arr = choice("choice2");
-		for (int i = 0; i < arr.length; i++) {
-			System.out.println(arr[i]);
-		}
+
 	}
 
 }

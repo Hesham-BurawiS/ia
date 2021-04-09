@@ -75,7 +75,7 @@ public class ViewUnis {
 		uniNameLbl = new JLabel("");
 		uniNameLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		uniNameLbl.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		uniNameLbl.setBounds(98, 11, 230, 26);
+		uniNameLbl.setBounds(23, 11, 305, 26);
 		panel.add(uniNameLbl);
 		
 		JLabel cityLbl = new JLabel("City:");
@@ -135,7 +135,7 @@ public class ViewUnis {
 		
 		currentUC = new JLabel("");
 		currentUC.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		currentUC.setBounds(335, 182, 89, 14);
+		currentUC.setBounds(335, 182, 89, 34);
 		panel.add(currentUC);
 		
 		// Updates the above lables witht the first choice
