@@ -27,10 +27,14 @@ import java.awt.event.KeyEvent;
 
 public class UserLogin extends User{
 
-	private JFrame frmUnibudget;
-	private JTextField emailTxt;
-	private JPasswordField passwordField;
+	private static JFrame frmUnibudget;
+	private static JTextField emailTxt;
+	private static JPasswordField passwordField;
+	private static JLabel notificationLbl;
+	
 
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -53,6 +57,99 @@ public class UserLogin extends User{
 	public UserLogin() {
 		initialize();
 	}
+	
+	public static void login() {
+		String unHashedPassword = passwordField.getText();
+		String email = emailTxt.getText();
+		String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+		String hashedPassword = null;
+		boolean validEmail = false;
+
+		// Filled in Data check
+		if (email.isBlank() || unHashedPassword.isBlank() ) {
+			notificationLbl.setText("Please fill in all fields!");
+			//TODO Stop Function
+		}
+		// Email Validation
+		else if (!email.matches(regex)) {
+			notificationLbl.setText("Please enter a valid email!");
+		}
+		else { // Used to reset label once conditions are met
+			notificationLbl.setText("");
+		}
+		// Database Connection to verify user information
+		Connection conn = null;
+		try {
+		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
+		    Statement stmt = null;
+		    ResultSet rs = null;
+		    
+		    
+		    stmt = conn.createStatement();
+		    rs = stmt.executeQuery("SELECT * FROM users WHERE email = " + "'" + email + "'");
+		    while (rs.next()) {
+		    	 validEmail = true;
+		         hashedPassword = rs.getString("password");
+		        if(!BCrypt.checkpw(unHashedPassword, hashedPassword)) {
+		        	notificationLbl.setText("Invalid email or password!");
+		        }
+		        else {
+		        	notificationLbl.setText("");	
+		        	// Set user data but do I want to put it in user file and use as global var and build an object?
+		        	//User.main(null);
+		        	firstName = rs.getString("firstName");
+		        	lastName = rs.getString("lastName");
+		        	User.email = email; // The variable is already used here that's why User.
+		        	id = rs.getInt("id");
+		        	int choiceCount = 1;
+		    		totalChoices = 5; 
+		    		String UniNames [] = new String [5];
+		    		while (choiceCount <=5) {
+		    			String [] arr = choice("choice"+choiceCount);
+		    			if(arr[0] == null) {
+		    				totalChoices--; }
+		    			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer ex
+		    			choiceCount++;			
+		    		}
+		    		
+
+		    		User.arrayOfUnis = new String[totalChoices];
+		    		for (int i = 0; i < totalChoices; i++) {
+		    			User.arrayOfUnis[i] = UniNames[i];
+		    		}
+		    		
+		    		if(UniNames[0] != null) {
+		    			User.choice1 = UniNames[0];
+		    		}
+		    		if(UniNames[1] != null) {
+		    			User.choice2 = UniNames[1];
+		    		}
+		    		if(UniNames[2] != null) {
+		    			User.choice3 = UniNames[2];
+		    		}
+		    		if(UniNames[3] != null) {
+		    			User.choice4 = UniNames[3];
+		    		}
+		    		if(UniNames[4] != null) {
+		    			User.choice5 = UniNames[4];
+		    		}
+		        	MainMenu.main(null);
+		        	frmUnibudget.dispose();
+		        }
+		      }
+		    // the while loop won't run if the email is invalid so this goes here
+		    if (!validEmail) {
+		    	notificationLbl.setText("Invalid email or password!");
+		    }
+		
+		
+	} catch (SQLException ex) {
+	    // handle any errors
+	    System.out.println("SQLException: " + ex.getMessage());
+	    System.out.println("SQLState: " + ex.getSQLState());
+	    System.out.println("VendorError: " + ex.getErrorCode());
+	}
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -71,7 +168,7 @@ public class UserLogin extends User{
 		welcomeLbl.setFont(new Font("Tahoma", Font.BOLD, 18));
 		frmUnibudget.getContentPane().add(welcomeLbl);
 		
-		final JLabel notificationLbl = new JLabel("");
+		notificationLbl = new JLabel("");
 		notificationLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		notificationLbl.setForeground(Color.RED);
 		notificationLbl.setBounds(131, 34, 218, 14);
@@ -94,101 +191,14 @@ public class UserLogin extends User{
 		passwordLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUnibudget.getContentPane().add(passwordLbl);
 		
+		
+		
 		passwordField = new JPasswordField();
 		passwordField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-					String unHashedPassword = passwordField.getText();
-					String email = emailTxt.getText();
-					String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
-					String hashedPassword = null;
-					boolean validEmail = false;
-
-					// Filled in Data check
-					if (email.isBlank() || unHashedPassword.isBlank() ) {
-						notificationLbl.setText("Please fill in all fields!");
-						//TODO Stop Function
-					}
-					// Email Validation
-					else if (!email.matches(regex)) {
-						notificationLbl.setText("Please enter a valid email!");
-					}
-					else { // Used to reset label once conditions are met
-						notificationLbl.setText("");
-					}
-					// Database Connection to verify user information
-					Connection conn = null;
-					try {
-					    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
-					    Statement stmt = null;
-					    ResultSet rs = null;
-					    
-					    
-					    stmt = conn.createStatement();
-					    rs = stmt.executeQuery("SELECT * FROM users WHERE email = " + "'" + email + "'");
-					    while (rs.next()) {
-					    	 validEmail = true;
-					         hashedPassword = rs.getString("password");
-					        if(!BCrypt.checkpw(unHashedPassword, hashedPassword)) {
-					        	notificationLbl.setText("Invalid email or password!");
-					        }
-					        else {
-					        	notificationLbl.setText("");	
-					        	// Set user data but do I want to put it in user file and use as global var and build an object?
-					        	//User.main(null);
-					        	firstName = rs.getString("firstName");
-					        	lastName = rs.getString("lastName");
-					        	User.email = email; // The variable is already used here that's why User.
-					        	id = rs.getInt("id");
-					        	int choiceCount = 1;
-					    		totalChoices = 5; 
-					    		String UniNames [] = new String [5];
-					    		while (choiceCount <=5) {
-					    			String [] arr = choice("choice"+choiceCount);
-					    			if(arr[0] == null) {
-					    				totalChoices--; }
-					    			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer ex
-					    			choiceCount++;			
-					    		}
-					    		
-
-					    		User.arrayOfUnis = new String[totalChoices];
-					    		for (int i = 0; i < totalChoices; i++) {
-					    			User.arrayOfUnis[i] = UniNames[i];
-					    		}
-					    		
-					    		if(UniNames[0] != null) {
-					    			User.choice1 = UniNames[0];
-					    		}
-					    		if(UniNames[1] != null) {
-					    			User.choice2 = UniNames[1];
-					    		}
-					    		if(UniNames[2] != null) {
-					    			User.choice3 = UniNames[2];
-					    		}
-					    		if(UniNames[3] != null) {
-					    			User.choice4 = UniNames[3];
-					    		}
-					    		if(UniNames[4] != null) {
-					    			User.choice5 = UniNames[4];
-					    		}
-					        	MainMenu.main(null);
-					        	frmUnibudget.dispose();
-					        }
-					      }
-					    // the while loop won't run if the email is invalid so this goes here
-					    if (!validEmail) {
-					    	notificationLbl.setText("Invalid email or password!");
-					    }
-					
-					
-				} catch (SQLException ex) {
-				    // handle any errors
-				    System.out.println("SQLException: " + ex.getMessage());
-				    System.out.println("SQLState: " + ex.getSQLState());
-				    System.out.println("VendorError: " + ex.getErrorCode());
-				}
+					login();
 					
 				}
 			}
@@ -200,96 +210,7 @@ public class UserLogin extends User{
 		JButton loginBtn = new JButton("Login");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String unHashedPassword = passwordField.getText();
-				String email = emailTxt.getText();
-				String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
-				String hashedPassword = null;
-				boolean validEmail = false;
-
-				// Filled in Data check
-				if (email.isBlank() || unHashedPassword.isBlank() ) {
-					notificationLbl.setText("Please fill in all fields!");
-					//TODO Stop Function change to while?
-				}
-				// Email Validation
-				else if (!email.matches(regex)) {
-					notificationLbl.setText("Please enter a valid email!");
-				}
-				else { // Used to reset label once conditions are met
-					notificationLbl.setText("");
-				}
-				// Database Connection to verify user information
-				Connection conn = null;
-				try {
-				    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
-				    Statement stmt = null;
-				    ResultSet rs = null;
-				    
-				    
-				    stmt = conn.createStatement();
-				    rs = stmt.executeQuery("SELECT * FROM users WHERE email = " + "'" + email + "'");
-				    while (rs.next()) {
-				    	 validEmail = true;
-				         hashedPassword = rs.getString("password");
-				        if(!BCrypt.checkpw(unHashedPassword, hashedPassword)) {
-				        	notificationLbl.setText("Invalid email or password!");
-				        }
-				        else {
-				        	notificationLbl.setText("");
-				        	// Set user data but do I want to put it in user file and use as global var and build an object?
-				        	//User.main(null);
-				        	User.firstName = rs.getString("firstName");
-				        	User.lastName = rs.getString("lastName");
-				        	User.email = email;
-				        	User.id = rs.getInt("id");
-				        	int choiceCount = 1;
-				    		totalChoices = 5; 
-				    		String UniNames [] = new String [5];
-				    		while (choiceCount <=5) {
-				    			String [] arr = choice("choice"+choiceCount);
-				    			if(arr[0] == null) {
-				    				totalChoices--; }
-				    			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer ex
-				    			choiceCount++;			
-				    		}
-				    		
-
-				    		User.arrayOfUnis = new String[totalChoices];
-				    		for (int i = 0; i < totalChoices; i++) {
-				    			User.arrayOfUnis[i] = UniNames[i];
-				    		}
-				    		
-				    		if(UniNames[0] != null) {
-				    			User.choice1 = UniNames[0];
-				    		}
-				    		if(UniNames[1] != null) {
-				    			User.choice2 = UniNames[1];
-				    		}
-				    		if(UniNames[2] != null) {
-				    			User.choice3 = UniNames[2];
-				    		}
-				    		if(UniNames[3] != null) {
-				    			User.choice4 = UniNames[3];
-				    		}
-				    		if(UniNames[4] != null) {
-				    			User.choice5 = UniNames[4];
-				    		}
-				        	MainMenu.main(null);
-				        	frmUnibudget.dispose();
-				        }
-				      }
-				    // the while loop won't run if the email is invalid so this goes here
-				    if (!validEmail) {
-				    	notificationLbl.setText("Invalid email or password!");
-				    }
-				
-				
-			} catch (SQLException ex) {
-			    // handle any errors
-			    System.out.println("SQLException: " + ex.getMessage());
-			    System.out.println("SQLState: " + ex.getSQLState());
-			    System.out.println("VendorError: " + ex.getErrorCode());
-			}
+				login();
 		}});
 		loginBtn.setBounds(131, 207, 218, 25);
 		loginBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));

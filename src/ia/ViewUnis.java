@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import java.awt.SystemColor;
 
 public class ViewUnis {
 
@@ -71,11 +72,10 @@ public class ViewUnis {
 		frmUnibudget.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		
 		uniNameLbl = new JLabel("");
 		uniNameLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		uniNameLbl.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		uniNameLbl.setBounds(23, 11, 305, 26);
+		uniNameLbl.setBounds(23, 11, 359, 26);
 		panel.add(uniNameLbl);
 		
 		JLabel cityLbl = new JLabel("City:");
@@ -222,6 +222,8 @@ public class ViewUnis {
 		panel.add(previousBtn);
 		
 		JButton btnNewButton = new JButton("");
+		btnNewButton.setBackground(SystemColor.control);
+		btnNewButton.setToolTipText("Remove Uni");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int removalConfirmation = JOptionPane.showConfirmDialog(frmUnibudget, "Are you sure you would like to remove" + 
@@ -243,8 +245,8 @@ public class ViewUnis {
 				}
 			}
 		});
-		btnNewButton.setIcon(new ImageIcon(ViewUnis.class.getResource("/resources/red-x.png")));
-		btnNewButton.setBounds(360, 11, 64, 64);
+		btnNewButton.setIcon(new ImageIcon(ViewUnis.class.getResource("/resources/Delete Button.png")));
+		btnNewButton.setBounds(392, 11, 32, 32);
 		panel.add(btnNewButton);
 		
 
