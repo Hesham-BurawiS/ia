@@ -67,7 +67,7 @@ public class PropertySelector {
 	 */
 	private void initialize() {
 		frmUniBudget = new JFrame();
-		frmUniBudget.setBounds(100, 100, 450, 175);
+		frmUniBudget.setBounds(100, 100, 450, 180);
 		frmUniBudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		frmUniBudget.setTitle("UniBudget");
 		frmUniBudget.getContentPane().setLayout(null);

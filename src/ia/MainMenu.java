@@ -77,11 +77,18 @@ public class MainMenu extends User{
 				}
 			}
 		});
-		viewUniBtn.setBounds(10, 145, 130, 23);
+		viewUniBtn.setBounds(294, 51, 130, 23);
 		frmUnibudget.getContentPane().add(viewUniBtn);
 		
 		JButton budgetBtn = new JButton("Budget");
-		budgetBtn.setBounds(10, 240, 130, 23);
+		budgetBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BudgetUniSelector.main(null);
+				frmUnibudget.dispose();
+				
+			}
+		});
+		budgetBtn.setBounds(10, 145, 130, 23);
 		frmUnibudget.getContentPane().add(budgetBtn);
 		
 		JButton logoutBtn = new JButton("Logout");
@@ -113,7 +120,7 @@ public class MainMenu extends User{
 		
 		JButton removeUniBtn = new JButton("Remove a Uni");
 		removeUniBtn.setEnabled(false);
-		removeUniBtn.setBounds(294, 51, 130, 23);
+		removeUniBtn.setBounds(10, 240, 130, 23);
 		frmUnibudget.getContentPane().add(removeUniBtn);
 	}
 }

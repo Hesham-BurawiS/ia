@@ -264,6 +264,7 @@ public class AddUnis {
 				//TODO Add to total uni count
 				if (User.totalChoices==5) {
 					JOptionPane.showMessageDialog(frmUnibudget, "You've reached the maximum number of choices (5)", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 				//TODO Check if this option is already added or maybe nah
 				try {
@@ -285,7 +286,7 @@ public class AddUnis {
 		        //TODO Could use arrays to store and loop changing i and storing the other data in an array
 		        //preparedStatement.setString(1, seq.nextVal(););
 		        //currentCity = cityTxt.getText();
-
+		        
 		        preparedStatement.setInt(1, User.id);		       
 		        preparedStatement.setString(2, codeChoice);
 		        preparedStatement.setString(3, uniName);
@@ -294,9 +295,189 @@ public class AddUnis {
 		        preparedStatement.setInt(6, length);
 		        preparedStatement.setInt(7, cost);
 		        preparedStatement.setString(8, (String) campusComboBox.getSelectedItem());
+
 		        User.totalChoices++;
 		        
 		        preparedStatement.executeUpdate(); 
+		        
+		     // Inserts data into DB MEANT FOR BUDGET
+		        final String budgetTables [] = {"Income","Housing","Entertainment","Transportation","Loans","Insurance","Savings","Food","Subscriptions","Personal"};
+		        
+		        final String incomeTypes [] = {"Income 1","Other"};
+		        final String housingTypes [] = {"Rent","Phone","Electricity","Gas","Water","Cable","Maintenance","Supplies","Other"};
+		        final String entertainmentTypes [] = {"Movies","Concerts","Sporting Events","Live Theatre", "Streaming Subscriptions", "Other"};
+		        final String transportationTypes [] = {"Vehicle Payment","Bus Fare","Insurance","Licensing", "Fuel", "Maintenance","Other"};
+		        final String loanTypes [] = {"Personal","Student","Credit Card 1","Credit Card 2", "Other"};
+		        final String insuranceTypes [] = {"Home","Health","Life", "Other"};
+		        final String savingsTypes [] = {"Investment Account","Savings","Other"};
+		        final String foodTypes [] = {"Groceries","Dining Out","Other"};
+		        final String subscriptionTypes [] = {"E-Commerce","Entertainment","Other"};
+		        final String personalCareType [] = {"Medical","Hair/Nails","Clothing","Dry Cleaning","Health Club","Organisation dues","Other"};
+		        
+		        for (int i = 0; i < budgetTables.length; i++) {
+		        	if(i==0) {
+		        	for (int j = 0; j < incomeTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, incomeTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==1) {
+		        	for (int j = 0; j < housingTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, housingTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==2) {
+		        	for (int j = 0; j < entertainmentTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, entertainmentTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==3) {
+		        	for (int j = 0; j < transportationTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, transportationTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==4) {
+		        	for (int j = 0; j < loanTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, loanTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==5) {
+		        	for (int j = 0; j < insuranceTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, insuranceTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==6) {
+		        	for (int j = 0; j < savingsTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, savingsTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==7) {
+		        	for (int j = 0; j < foodTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, foodTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==8) {
+		        	for (int j = 0; j < subscriptionTypes.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, subscriptionTypes[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+		        	
+		        	else if(i==9) {
+		        	for (int j = 0; j < personalCareType.length; j++) {
+		        		 sql = "INSERT INTO " + budgetTables[i] + " VALUES (?,?,?,?,?,?)";
+					        preparedStatement = conn.prepareStatement(sql);
+					        
+					        preparedStatement.setInt(1, User.id);		       
+					        preparedStatement.setInt(2, nextChoice);
+					        preparedStatement.setString(3, personalCareType[j]);
+					        preparedStatement.setInt(4, 0);
+					        preparedStatement.setInt(5, 0);
+					        preparedStatement.setInt(6, 0);
+					        
+					        preparedStatement.executeUpdate(); 
+						}
+		        	}
+			       
+				}
+
+		        
 		        JOptionPane.showMessageDialog(frmUnibudget, "You've successfully added a university", "Success", JOptionPane.INFORMATION_MESSAGE);
 		        frmUnibudget.dispose();
 		        MainMenu.main(null);
