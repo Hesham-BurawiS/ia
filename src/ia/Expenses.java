@@ -1,21 +1,21 @@
 package ia;
 
 public class Expenses {
-	double other;
-	double projectedCostSubtotal;
-	double actualCostSubtotal;
-	double differenceSubtotal;
+	String type;
+	double projectedCost;
+	double actualCost;
+	double difference;
 	public Expenses() {
-		other = 0;
-		projectedCostSubtotal = 0;
-		actualCostSubtotal = 0;
-		differenceSubtotal = 0;
+		type = "";
+		projectedCost = 0;
+		actualCost = 0;
+		difference = 0;
 	}
-public Expenses(double o, double p, double a, double d) {
-	other = o;
-	projectedCostSubtotal = p;
-	actualCostSubtotal = a;
-	differenceSubtotal = d;
+public Expenses(String t, double p, double a, double d) {
+	type = t;
+	projectedCost = p;
+	actualCost = a;
+	difference= d;
 }
 }
 

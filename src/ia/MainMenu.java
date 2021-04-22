@@ -11,6 +11,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 public class MainMenu extends User{
 
@@ -44,6 +45,7 @@ public class MainMenu extends User{
 	 */
 	private void initialize() {
 		frmUnibudget = new JFrame();
+		frmUnibudget.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\hesho\\Downloads\\Iconsmind-Outline-Student-Hat-2.ico"));
 		frmUnibudget.setTitle("UniBudget");
 		frmUnibudget.setBounds(100, 100, 450, 350);
 		frmUnibudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
