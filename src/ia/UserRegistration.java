@@ -163,18 +163,16 @@ public class UserRegistration {
 				String hashedPassword = null;
 
 				
-				//TODO Change these ifs to whiles
-				// Filled in Data check
+				// Presence Check
 				if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || unHashedPassword.isBlank() ) {
 					notificationLbl.setText("Please fill in all fields!");
-					//TODO Stop Function
+					return;
 				}
-				// Email Validation
+				// Email Format Check
 				else if (!email.matches(regex)) {
 					notificationLbl.setText("Please enter a valid email!");
+					return;
 				}
-				
-				//TODO Add password requirements such as min. characters and alpha-numeric
 				
 				// Password match confirmation 
 				else if (unHashedPassword.equals(passwordConfirmation)) {
@@ -183,11 +181,8 @@ public class UserRegistration {
 					}
 				else {
 					notificationLbl.setText("Error your passwords don't match!");
-					//TODO Stop Function
+					return;
 				}
-				
-				
-				
 				
 				try {
 					
