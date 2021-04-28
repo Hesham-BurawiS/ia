@@ -159,7 +159,7 @@ public class UserRegistration {
 				String email = emailTxt.getText();
 				String unHashedPassword = passwordField.getText();
 				String passwordConfirmation = confirmPasswdField.getText();
-				String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+				String regex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 				String hashedPassword = null;
 
 				
