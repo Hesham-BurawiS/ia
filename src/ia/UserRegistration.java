@@ -191,8 +191,6 @@ public class UserRegistration {
 				    // Inserts data into DB 
 			        String sql = "INSERT INTO users " + "VALUES (default,?, ?, ?, ?)";
 			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-			        //TODO Could use arrays to store and loop changing i and storing the other data in an array
-			        //preparedStatement.setString(1, seq.nextVal(););
 			        preparedStatement.setString(1, email);
 			        preparedStatement.setString(2, hashedPassword);
 			        preparedStatement.setString(3, firstName);
@@ -200,7 +198,6 @@ public class UserRegistration {
 
 			        preparedStatement.executeUpdate(); 
 				    
-			        // Open a dialogue menu or change label so rename it to notificationLbl
 			        notificationLbl.setForeground(Color.GREEN);
 			        notificationLbl.setText("Successfully registered!");
 			        NotifWindow.main(null);
