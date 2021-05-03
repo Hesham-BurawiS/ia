@@ -76,12 +76,11 @@ public class BudgetUpdater {
 		return diff;
 	}
 	
-	public void expenseChanger(String table) {
+	public void expenseUpdater(String table) {
 		Connection conn = null;
 		try {
-			User.id =12;
-			BudgetUniSelector.uniIndex = 1;
-			lblExpenseCata.setText(table);
+			
+		    lblExpenseCata.setText(table);
 		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");				    					    
 		    String sql = "SELECT * FROM " + table + " WHERE id = '" + User.id + "'AND uniChoice = '" + BudgetUniSelector.uniIndex+"'";
 		    Statement stmt = null;
@@ -108,7 +107,7 @@ public class BudgetUpdater {
 			differenceTxt.setText(String.valueOf(current.difference));
 			expenseCmb.setModel(new DefaultComboBoxModel(expenseTypes));
 		} catch (SQLException ex) {
-			 	System.out.println("SQLException: " + ex.getMessage());
+			    System.out.println("SQLException: " + ex.getMessage());
 			    System.out.println("SQLState: " + ex.getSQLState());
 			    System.out.println("VendorError: " + ex.getErrorCode());
 			} 
@@ -220,10 +219,10 @@ public class BudgetUpdater {
 			public void actionPerformed(ActionEvent e) {
 				Connection conn = null;
 				try {
-				    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");				    					    
+				   	conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");				    					    
 				    String sql = "UPDATE " + budgetTables[tableChoice] + " SET projectedCost = ?, actualCost = ?, difference = ? WHERE id = '" + User.id + "'AND uniChoice = '" + BudgetUniSelector.uniIndex + "' AND expenseType = ?";
 			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-			        //TODO Could use arrays to store and loop changing i and storing the other data in an array
+			        
 			        double pC = Double.valueOf(projectedCostTxt.getText());
 			        double aC = Double.valueOf(actualCostTxt.getText());
 			        preparedStatement.setDouble(1,pC);
@@ -233,7 +232,9 @@ public class BudgetUpdater {
 
 			        preparedStatement.executeUpdate(); 
 				} catch (SQLException ex) {
-					// TODO: handle exception
+				 	System.out.println("SQLException: " + ex.getMessage());
+			   	 	System.out.println("SQLState: " + ex.getSQLState());
+			    	System.out.println("VendorError: " + ex.getErrorCode());
 				}
 			}
 		});
@@ -247,7 +248,7 @@ public class BudgetUpdater {
 					tableChoice = -1; //To count for the addition below
 				}
 				tableChoice++;
-				expenseChanger(budgetTables[tableChoice]);
+				expenseUpdater(budgetTables[tableChoice]);
 			}
 		});
 		nextBtn.setBackground(SystemColor.control);
@@ -262,7 +263,7 @@ public class BudgetUpdater {
 					tableChoice = 10; // To count for the subtraction below
 				}
 				tableChoice--;
-				expenseChanger(budgetTables[tableChoice]);
+				expenseUpdater(budgetTables[tableChoice]);
 				
 			}
 		});

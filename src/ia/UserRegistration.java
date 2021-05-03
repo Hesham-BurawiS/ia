@@ -159,22 +159,20 @@ public class UserRegistration {
 				String email = emailTxt.getText();
 				String unHashedPassword = passwordField.getText();
 				String passwordConfirmation = confirmPasswdField.getText();
-				String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
+				String regex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
 				String hashedPassword = null;
 
 				
-				//TODO Change these ifs to whiles
-				// Filled in Data check
+				// Presence Check
 				if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || unHashedPassword.isBlank() ) {
 					notificationLbl.setText("Please fill in all fields!");
-					//TODO Stop Function
+					return;
 				}
-				// Email Validation
+				// Email Format Check
 				else if (!email.matches(regex)) {
 					notificationLbl.setText("Please enter a valid email!");
+					return;
 				}
-				
-				//TODO Add password requirements such as min. characters and alpha-numeric
 				
 				// Password match confirmation 
 				else if (unHashedPassword.equals(passwordConfirmation)) {
@@ -183,11 +181,8 @@ public class UserRegistration {
 					}
 				else {
 					notificationLbl.setText("Error your passwords don't match!");
-					//TODO Stop Function
+					return;
 				}
-				
-				
-				
 				
 				try {
 					
@@ -196,8 +191,6 @@ public class UserRegistration {
 				    // Inserts data into DB 
 			        String sql = "INSERT INTO users " + "VALUES (default,?, ?, ?, ?)";
 			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-			        //TODO Could use arrays to store and loop changing i and storing the other data in an array
-			        //preparedStatement.setString(1, seq.nextVal(););
 			        preparedStatement.setString(1, email);
 			        preparedStatement.setString(2, hashedPassword);
 			        preparedStatement.setString(3, firstName);
@@ -205,7 +198,6 @@ public class UserRegistration {
 
 			        preparedStatement.executeUpdate(); 
 				    
-			        // Open a dialogue menu or change label so rename it to notificationLbl
 			        notificationLbl.setForeground(Color.GREEN);
 			        notificationLbl.setText("Successfully registered!");
 			        NotifWindow.main(null);
