@@ -82,7 +82,7 @@ public class BudgetUpdater {
 			
 		    lblExpenseCata.setText(table);
 		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");				    					    
-		    String sql = "SELECT * FROM " + table + " WHERE id = '" + User.id + "'AND uniChoice = '" + BudgetUniSelector.uniIndex+"'";
+		    String sql = "SELECT * FROM " + table + " WHERE id = '" + User.id + "'AND uniChoice = '" + BudgetUniSelector.getUniIndex()+"'";
 		    Statement stmt = null;
 		    ResultSet rs = null;
 		    stmt = conn.createStatement();
@@ -220,7 +220,7 @@ public class BudgetUpdater {
 				Connection conn = null;
 				try {
 				   	conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");				    					    
-				    String sql = "UPDATE " + budgetTables[tableChoice] + " SET projectedCost = ?, actualCost = ?, difference = ? WHERE id = '" + User.id + "'AND uniChoice = '" + BudgetUniSelector.uniIndex + "' AND expenseType = ?";
+				    String sql = "UPDATE " + budgetTables[tableChoice] + " SET projectedCost = ?, actualCost = ?, difference = ? WHERE id = '" + User.id + "'AND uniChoice = '" + BudgetUniSelector.getUniIndex() + "' AND expenseType = ?";
 			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 			        
 			        double pC = Double.valueOf(projectedCostTxt.getText());
@@ -272,7 +272,7 @@ public class BudgetUpdater {
 		backBtn.setBounds(315, 222, 32, 32);
 		frmUnibudget.getContentPane().add(backBtn);
 		
-		expenseChanger("Income");
+		expenseUpdater("Income");
 				
 		lblError = new JLabel("");
 		lblError.setHorizontalAlignment(SwingConstants.CENTER);

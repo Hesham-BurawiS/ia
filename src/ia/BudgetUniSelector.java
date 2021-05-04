@@ -23,7 +23,7 @@ public class BudgetUniSelector {
 
 	private JFrame frmUniBudget;
 	private JComboBox comboBox;
-	public static int uniIndex;
+	private static int uniIndex;
 
 	/**
 	 * Launch the application.
@@ -47,7 +47,11 @@ public class BudgetUniSelector {
 	public BudgetUniSelector() {
 		initialize();
 	}
-
+	
+	public static int getUniIndex() {
+		return uniIndex;
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -97,7 +101,7 @@ public class BudgetUniSelector {
 		JButton viewBtn = new JButton("View");
 		viewBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				uniIndex = comboBox.getSelectedIndex() +1;
+				uniIndex = comboBox.getSelectedIndex()+1;
 				BudgetViewer.main(null);
 				frmUniBudget.dispose();
 			}
@@ -105,4 +109,6 @@ public class BudgetUniSelector {
 		viewBtn.setBounds(236, 107, 89, 23);
 		frmUniBudget.getContentPane().add(viewBtn);
 	}
+
+
 }
