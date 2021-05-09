@@ -155,19 +155,19 @@ public class BudgetViewer {
 				lblCurrET.setBounds(20, i, 157, 26);
 				panel.add(lblCurrET);
 				
-				lblCurrPC = new JLabel("£"+rs.getString("projectedCost"));
+				lblCurrPC = new JLabel("Â£"+rs.getString("projectedCost"));
 				lblCurrPC.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCurrPC.setBounds(187, i, 157, 26);
 				panel.add(lblCurrPC);
 				projectedTotal += doubleCaster(rs.getString("projectedCost"));
 				
-				lblCurrAC = new JLabel("£"+rs.getString("actualCost"));
+				lblCurrAC = new JLabel("Â£"+rs.getString("actualCost"));
 				lblCurrAC.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCurrAC.setBounds(354, i, 157, 26);
 				panel.add(lblCurrAC);
 				actualTotal += doubleCaster(rs.getString("actualCost"));
 				
-				lblCurrDiff = new JLabel("£"+rs.getString("difference"));
+				lblCurrDiff = new JLabel("Â£"+rs.getString("difference"));
 				lblCurrDiff.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCurrDiff.setBounds(521, i, 157, 26);
 				panel.add(lblCurrDiff);
@@ -177,9 +177,9 @@ public class BudgetViewer {
 				panel.repaint();
 				i+=40;
 			}
-			lblProjectedCostSubtotal.setText("£"+projectedTotal);
-			lblActualCostSubtotal.setText("£"+actualTotal);
-			lblDifferenceSubtotal.setText("£"+diffTotal);
+			lblProjectedCostSubtotal.setText("Â£"+projectedTotal);
+			lblActualCostSubtotal.setText("Â£"+actualTotal);
+			lblDifferenceSubtotal.setText("Â£"+diffTotal);
 		    		    
 
 	} catch (SQLException ex) {
@@ -242,21 +242,21 @@ public class BudgetViewer {
 		frmUniBudget.getContentPane().add(lblDifference);
 		
 		
-		lblProjectedCostSubtotal = new JLabel("£0.00");
+		lblProjectedCostSubtotal = new JLabel("Â£0.00");
 		lblProjectedCostSubtotal.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblProjectedCostSubtotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProjectedCostSubtotal.setBounds(177, 439, 157, 26);
 		frmUniBudget.getContentPane().add(lblProjectedCostSubtotal);
 		
 		
-		lblActualCostSubtotal = new JLabel("£0.00");
+		lblActualCostSubtotal = new JLabel("Â£0.00");
 		lblActualCostSubtotal.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblActualCostSubtotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblActualCostSubtotal.setBounds(354, 439, 157, 26);
 		frmUniBudget.getContentPane().add(lblActualCostSubtotal);
 		
 		
-		lblDifferenceSubtotal = new JLabel("£0.00");
+		lblDifferenceSubtotal = new JLabel("Â£0.00");
 		lblDifferenceSubtotal.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblDifferenceSubtotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDifferenceSubtotal.setBounds(521, 439, 157, 26);
@@ -358,13 +358,15 @@ public class BudgetViewer {
 				     System.out.println(report);
 				     //message.setContent(report, "text/html");
 				     message.setText(report);  
+				     
 				     try {
-				         File myObj = new File("filename.txt");
-				         if (myObj.createNewFile()) {
-				           System.out.println("File created: " + myObj.getName());
-				         } else {
-				           System.out.println("File already exists.");
-				         }
+				         File budgetFile = new File("filename.txt");
+					 	if (budgetFile.delete()) { 
+					      System.out.println("Deleted the file: " + budgetFile.getName());
+					   	  }
+				         if (budgetFile.createNewFile()) {
+				           System.out.println("File created: " + budgetFile.getName());
+				         } 
 				         FileWriter myWriter = new FileWriter("filename.txt");
 				         myWriter.write(report);
 				         myWriter.close();
