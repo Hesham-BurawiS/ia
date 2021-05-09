@@ -111,7 +111,6 @@ public class BudgetViewer {
 		    String currentDiff ="";		
 			
 		    report += "\n\n" + table.toUpperCase() +"\n";
-		    //report += "\nExpense Type  Projected Cost  Actual Cost  Difference";
 		    report += "\n"+stringFiller("Expense Type")+stringFiller("Projected Cost")+stringFiller("Actual Cost")+stringFiller("Difference");
 			while (rs.next()) {
 				//System.out.println(rs.getString(3));
@@ -119,7 +118,7 @@ public class BudgetViewer {
 				currentET = rs.getString("expenseType");
 				currentPC = rs.getString("projectedCost");
 				currentAC = rs.getString("actualCost");
-				currentDiff = rs.getString("difference");
+				currentDiff = rs.getString("difference");  //Duplication error if rs.getString is used directly 
 				report += "\n" + stringFiller(currentET) + stringFiller(currentPC) + stringFiller(currentAC) + stringFiller(currentDiff);
 			
 			} 
@@ -350,14 +349,18 @@ public class BudgetViewer {
 				     message.setSubject("UniBudget Report");  
 				     report += "Hi " + User.firstName + ",";
 				     report += "\nPlease find your UniBudget report below.";
-				     
+				     report += "\nBUDGET PREPARED FOR " + User.arrayOfUnis[BudgetUniSelector.getUniIndex()]; 
 				     for (int i = 0; i < budgetTables.length; i++) {
 				    	 System.out.println(budgetTables[i]);
 						emailDataFetcher(budgetTables[i]);
 					}
 				     System.out.println(report);
 				     //message.setContent(report, "text/html");
+<<<<<<< Updated upstream
 				     message.setText(report);  
+=======
+				     message.setText(report);
+>>>>>>> Stashed changes
 				     
 				     try {
 				         File budgetFile = new File("filename.txt");

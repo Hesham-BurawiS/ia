@@ -97,12 +97,12 @@ public class UserLogin extends User{
 		        	notificationLbl.setText("");	
 		        	// Set user data but do I want to put it in user file and use as global var and build an object?
 		        	//User.main(null);
-		        	firstName = rs.getString("firstName");
-		        	lastName = rs.getString("lastName");
+		        	User.firstName = rs.getString("firstName");
+		        	User.lastName = rs.getString("lastName");
 		        	User.email = email; // The variable is already used here that's why User.
 		        	id = rs.getInt("id");
 		        	int choiceCount = 1;
-		    		totalChoices = 5; 
+		    		User.totalChoices = 5; 
 		    		String UniNames [] = new String [5];
 		    		while (choiceCount <=5) {
 		    			String [] arr = choice("choice"+choiceCount);

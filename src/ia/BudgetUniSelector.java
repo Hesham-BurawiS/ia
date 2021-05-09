@@ -61,7 +61,7 @@ public class BudgetUniSelector {
 		frmUniBudget.setBounds(100, 100, 450, 180);
 		frmUniBudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmUniBudget.getContentPane().setLayout(null);
-		
+		uniIndex = 1;
 		JLabel titleLbl = new JLabel("Budget Planner");
 		titleLbl.setBounds(10, 11, 424, 22);
 		titleLbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -91,6 +91,7 @@ public class BudgetUniSelector {
 		JButton updateBtn = new JButton("Update");
 		updateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				uniIndex = comboBox.getSelectedIndex()+1; //Plus 1 because user has choices 1-5 not 0-4
 				BudgetUpdater.main(null);
 				frmUniBudget.dispose();
 			}
@@ -109,6 +110,6 @@ public class BudgetUniSelector {
 		viewBtn.setBounds(236, 107, 89, 23);
 		frmUniBudget.getContentPane().add(viewBtn);
 	}
-
+	
 
 }

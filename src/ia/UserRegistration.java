@@ -28,7 +28,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class UserRegistration {
+public class UserRegistration extends User {
 
 	private JFrame frmUnibudget;
 	private JTextField firstNameTxt;
@@ -185,16 +185,16 @@ public class UserRegistration {
 				}
 				
 				try {
-					
+				   User newUser = new User(email,firstName,lastName,hashedPassword);
 				   Connection conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget", "hesho" , "cQnfD23b8tiYk!7h");
 				    
 				    // Inserts data into DB 
 			        String sql = "INSERT INTO users " + "VALUES (default,?, ?, ?, ?)";
 			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-			        preparedStatement.setString(1, email);
-			        preparedStatement.setString(2, hashedPassword);
-			        preparedStatement.setString(3, firstName);
-			        preparedStatement.setString(4, lastName);
+			        preparedStatement.setString(1, newUser.email);
+			        preparedStatement.setString(2, newUser.hashedPassword);
+			        preparedStatement.setString(3, newUser.firstName);
+			        preparedStatement.setString(4, newUser.lastName);
 
 			        preparedStatement.executeUpdate(); 
 				    

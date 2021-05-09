@@ -20,22 +20,29 @@ public class User {
 	protected static String choice5;
 	protected static int totalChoices;
 	protected static String[] arrayOfUnis;
+	protected static String hashedPassword;
 
 	public User() {
 		// TODO Auto-generated constructor stub
-		int id;
-		String firstName;
-		String lastName;
-		String email;
-		String choice1;
-		String choice2;
-		String choice3;
-		String choice4;
-		String choice5;
-		String [] arrayOfUnis;
-		int totalChoices;
+		id = 0;
+		 firstName = "";
+		 lastName= "";
+		 email= "";
+		 choice1= "";
+		 choice2= "";
+		 choice3= "";
+		 choice4= "";
+		 choice5= "";
+		 arrayOfUnis = new String [5];
+		 totalChoices = 0;;
 
 		
+	}
+	public User(String e, String f, String l, String h) {
+		email = e;
+		firstName = f;
+		lastName = l;
+		hashedPassword = h;
 	}
 	public static String[] choice(String table) throws SQLException {
 		String[] choiceArr = new String [8];
