@@ -83,7 +83,7 @@ public class UserLogin extends User{
 		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
 		    Statement stmt = null;
 		    ResultSet rs = null;
-		    
+		    //User user = new User();
 		    
 		    stmt = conn.createStatement();
 		    rs = stmt.executeQuery("SELECT * FROM users WHERE email = " + "'" + email + "'");
@@ -100,7 +100,7 @@ public class UserLogin extends User{
 		        	User.firstName = rs.getString("firstName");
 		        	User.lastName = rs.getString("lastName");
 		        	User.email = email; // The variable is already used here that's why User.
-		        	id = rs.getInt("id");
+		        	User.id = rs.getInt("id");
 		        	int choiceCount = 1;
 		    		User.totalChoices = 5; 
 		    		String UniNames [] = new String [5];

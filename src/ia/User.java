@@ -19,22 +19,22 @@ public class User {
 	protected static String choice4;
 	protected static String choice5;
 	protected static int totalChoices;
-	protected static String[] arrayOfUnis;
+	protected static String[] arrayOfUnis; 
 	protected static String hashedPassword;
 
 	public User() {
 		// TODO Auto-generated constructor stub
-		id = 0;
-		 firstName = "";
-		 lastName= "";
-		 email= "";
-		 choice1= "";
-		 choice2= "";
-		 choice3= "";
-		 choice4= "";
-		 choice5= "";
-		 arrayOfUnis = new String [5];
-		 totalChoices = 0;;
+//		id = 0;
+//		 firstName = "";
+//		 lastName= "";
+//		 email= "";
+//		 choice1= "";
+//		 choice2= "";
+//		 choice3= "";
+//		 choice4= "";
+//		 choice5= "";
+//		 arrayOfUnis = new String [5];
+//		 totalChoices = 0;
 
 		
 	}

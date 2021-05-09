@@ -9,14 +9,21 @@ import javax.swing.SwingConstants;
 
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 import java.awt.Color;
@@ -154,19 +161,19 @@ public class BudgetViewer {
 				lblCurrET.setBounds(20, i, 157, 26);
 				panel.add(lblCurrET);
 				
-				lblCurrPC = new JLabel("Â£"+rs.getString("projectedCost"));
+				lblCurrPC = new JLabel("£"+rs.getString("projectedCost"));
 				lblCurrPC.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCurrPC.setBounds(187, i, 157, 26);
 				panel.add(lblCurrPC);
 				projectedTotal += doubleCaster(rs.getString("projectedCost"));
 				
-				lblCurrAC = new JLabel("Â£"+rs.getString("actualCost"));
+				lblCurrAC = new JLabel("£"+rs.getString("actualCost"));
 				lblCurrAC.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCurrAC.setBounds(354, i, 157, 26);
 				panel.add(lblCurrAC);
 				actualTotal += doubleCaster(rs.getString("actualCost"));
 				
-				lblCurrDiff = new JLabel("Â£"+rs.getString("difference"));
+				lblCurrDiff = new JLabel("£"+rs.getString("difference"));
 				lblCurrDiff.setHorizontalAlignment(SwingConstants.CENTER);
 				lblCurrDiff.setBounds(521, i, 157, 26);
 				panel.add(lblCurrDiff);
@@ -176,9 +183,9 @@ public class BudgetViewer {
 				panel.repaint();
 				i+=40;
 			}
-			lblProjectedCostSubtotal.setText("Â£"+projectedTotal);
-			lblActualCostSubtotal.setText("Â£"+actualTotal);
-			lblDifferenceSubtotal.setText("Â£"+diffTotal);
+			lblProjectedCostSubtotal.setText("£"+projectedTotal);
+			lblActualCostSubtotal.setText("£"+actualTotal);
+			lblDifferenceSubtotal.setText("£"+diffTotal);
 		    		    
 
 	} catch (SQLException ex) {
@@ -241,21 +248,21 @@ public class BudgetViewer {
 		frmUniBudget.getContentPane().add(lblDifference);
 		
 		
-		lblProjectedCostSubtotal = new JLabel("Â£0.00");
+		lblProjectedCostSubtotal = new JLabel("£0.00");
 		lblProjectedCostSubtotal.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblProjectedCostSubtotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProjectedCostSubtotal.setBounds(177, 439, 157, 26);
 		frmUniBudget.getContentPane().add(lblProjectedCostSubtotal);
 		
 		
-		lblActualCostSubtotal = new JLabel("Â£0.00");
+		lblActualCostSubtotal = new JLabel("£0.00");
 		lblActualCostSubtotal.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblActualCostSubtotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblActualCostSubtotal.setBounds(354, 439, 157, 26);
 		frmUniBudget.getContentPane().add(lblActualCostSubtotal);
 		
 		
-		lblDifferenceSubtotal = new JLabel("Â£0.00");
+		lblDifferenceSubtotal = new JLabel("£0.00");
 		lblDifferenceSubtotal.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblDifferenceSubtotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDifferenceSubtotal.setBounds(521, 439, 157, 26);
@@ -321,15 +328,15 @@ public class BudgetViewer {
 		JButton btnNewButton = new JButton("Email");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				  String host="smtp.burawi.tech";  
-				  final String user="unibudget@burawi.tech";//change accordingly  
-				  final String password="SZpIvFP3";//change accordingly  
+				  String host="smtp.burawi.tech";  // Host of the email server
+				  final String user="unibudget@burawi.tech"; 
+				  final String password="SZpIvFP3";  
 //				  User.email = "ioana.kada@bisc.edu.eg";
-				  User.email = "t268@bisc.edu.eg";
-				  User.firstName = "Ioana";
-				  String to=User.email;//change accordingly  
+//				  User.email = "t268@bisc.edu.eg";
+//				  User.firstName = "Ioana";
+				  String to=User.email; 
 				  
-				   //Get the session object  
+				   // Assigns the properties to initiate a connection to the SMTP server 
 				   Properties props = new Properties();  
 				   props.put("mail.smtp.host",host);  
 				   props.put("mail.smtp.auth", "true");
@@ -349,39 +356,51 @@ public class BudgetViewer {
 				     message.setSubject("UniBudget Report");  
 				     report += "Hi " + User.firstName + ",";
 				     report += "\nPlease find your UniBudget report below.";
-				     report += "\nBUDGET PREPARED FOR " + User.arrayOfUnis[BudgetUniSelector.getUniIndex()]; 
+				     report += "\nBUDGET PREPARED FOR " + User.arrayOfUnis[BudgetUniSelector.getUniIndex()-1]; 
 				     for (int i = 0; i < budgetTables.length; i++) {
-				    	 System.out.println(budgetTables[i]);
 						emailDataFetcher(budgetTables[i]);
 					}
-				     System.out.println(report);
-				     //message.setContent(report, "text/html");
-<<<<<<< Updated upstream
-				     message.setText(report);  
-=======
-				     message.setText(report);
->>>>>>> Stashed changes
+				     
+				     String filename = User.arrayOfUnis[BudgetUniSelector.getUniIndex()-1]+" Budget Report.txt";  // Subtraction is to ensure compatibility with arrays
+				     BodyPart messageBodyPart = new MimeBodyPart();
+
+			         // Fills the text component 
+			         messageBodyPart.setText("Hi "+User.firstName+", \nPlease find your budget attached.");
+			         
+			         // Creates a multipart message
+			         Multipart multipart = new MimeMultipart();
+
+			         // Set text message part
+			         multipart.addBodyPart(messageBodyPart);
 				     
 				     try {
-				         File budgetFile = new File("filename.txt");
+				         File budgetFile = new File(filename); 
 					 	if (budgetFile.delete()) { 
-					      System.out.println("Deleted the file: " + budgetFile.getName());
+					 		// Checks to see if file exists and if so delete's it in order to overwrite it with the new data
 					   	  }
-				         if (budgetFile.createNewFile()) {
-				           System.out.println("File created: " + budgetFile.getName());
-				         } 
-				         FileWriter myWriter = new FileWriter("filename.txt");
+				         budgetFile.createNewFile(); // Creates the file for the report does not need if due to deletion above
+				         
+				         // Writes generated report to the file
+				         FileWriter myWriter = new FileWriter(filename);
 				         myWriter.write(report);
 				         myWriter.close();
-				         System.out.println("Successfully wrote to the file.");
 				       } catch (IOException e1) {
 				         System.out.println("An error occurred.");
 				         e1.printStackTrace();
 				       }
-				    //send the message  
+				     
+				     // Adding the attachment above to the email
+			         messageBodyPart = new MimeBodyPart();
+			         DataSource source = new FileDataSource(filename);
+			         messageBodyPart.setDataHandler(new DataHandler(source));
+			         messageBodyPart.setFileName(filename);
+			         multipart.addBodyPart(messageBodyPart);
+
+			         // Combines both parts text and attachment
+			         message.setContent(multipart );  
+			         
+				    //send the message to the user
 				     Transport.send(message);  
-				  
-				     System.out.println("message sent successfully...");  
 				   
 				     } catch (MessagingException e1) {
 				    	 e1.printStackTrace();
