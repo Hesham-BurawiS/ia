@@ -70,11 +70,11 @@ public class PropertyVariablesSelection {
 		
 //		String to essentially be recreated https://www.rightmove.co.uk/student-accommodation/find.html?locationIdentifier=POSTCODE%5E269204&maxBedrooms=3&minBedrooms=1&maxPrice=2250&minPrice=1250&radius=0.5&propertyTypes=&mustHave=&dontShow=&furnishTypes=&keywords=
 		// Arrays to populate ComboBoxes below
-		String [] radius = {"This area only","Within 1/4 miles","Within 1/2 miles","Within 1 mile","Within 3 miles","Within 5 miles","Within 10 miles","Within 15 miles","Within 20 miles","Within 30 miles","Within 40 miles"};
-		String [] prices = {"Select PCM","£100","£150","£200","£250","£300","£350","£400","£500","£600","£700","£800","£900","£1000","£1100","£1200","£1300","£1400","£1500","£1750","£2000","£2250","£2500","£2750","£3000","£3500","£4000","£4500","£5000","£5500","£6000","£6500"
+		final String [] radius = {"This area only","Within 1/4 miles","Within 1/2 miles","Within 1 mile","Within 3 miles","Within 5 miles","Within 10 miles","Within 15 miles","Within 20 miles","Within 30 miles","Within 40 miles"};
+		final String [] prices = {"Select PCM","£100","£150","£200","£250","£300","£350","£400","£500","£600","£700","£800","£900","£1000","£1100","£1200","£1300","£1400","£1500","£1750","£2000","£2250","£2500","£2750","£3000","£3500","£4000","£4500","£5000","£5500","£6000","£6500"
 				,"£7000","£8000","£9000","£10000","£12500","£15000","£17500","£20000"};
-		String [] beds = {"Any","Studio","1","2","3","4","5","6","7","8","9","10+"};
-		String [] type = {"All Property Types", "Houses", "Flats"};
+		final String [] beds = {"Any","Studio","1","2","3","4","5","6","7","8","9","10+"};
+		final String [] type = {"All Property Types", "Houses", "Flats"};
 		
 		
 		JButton backBtn = new JButton("");
@@ -218,7 +218,7 @@ public class PropertyVariablesSelection {
 					minPrice = (String) minPriceCmb.getSelectedItem();
 					minPrice = minPrice.substring(1); }
 				
-				String [] searchRadius = {"0","0.25","0.5","1","3","5","10","15","20","30","40"};
+				String [] searchRadius = {"0","0.25","0.5","1","3","5","10","15","20","30","40"}; // Array without text for URL building
 				String radius =  searchRadius[radiusCmb.getSelectedIndex()];
 				
 				String propertyType;

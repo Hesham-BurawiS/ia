@@ -8,6 +8,11 @@ import javax.swing.SwingConstants;
 
 
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Robot;
+
 import javax.swing.JButton;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -26,11 +31,21 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.swing.ImageIcon;
 import java.awt.SystemColor;
+import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -78,9 +93,10 @@ public class BudgetViewer {
 	/**
 	 * Create the application.
 	 */
-	public BudgetViewer() {
+	public BudgetViewer()  {
 		initialize();
 	}
+	
 	
 	public double doubleCaster(String input) {
 		try {
@@ -92,7 +108,8 @@ public class BudgetViewer {
 	}
 	
 	protected String stringFiller(String text) {
-
+			/* This method ensures that the given string has a total of 35 characters if less, whitespace is addedd this is make sure everything is
+			 even in the report the new string is returned*/
 		    char[] array = new char[35];
 		    char[] arrayText = text.toCharArray();
 		    for (int i = 0; i < arrayText.length; i++) {
@@ -125,7 +142,7 @@ public class BudgetViewer {
 				currentET = rs.getString("expenseType");
 				currentPC = rs.getString("projectedCost");
 				currentAC = rs.getString("actualCost");
-				currentDiff = rs.getString("difference");  //Duplication error if rs.getString is used directly 
+				currentDiff = rs.getString("difference");  //Duplication error if rs.getString is used directly without specifically asigning these variables
 				report += "\n" + stringFiller(currentET) + stringFiller(currentPC) + stringFiller(currentAC) + stringFiller(currentDiff);
 			
 			} 
@@ -215,7 +232,7 @@ public class BudgetViewer {
 		expenseType = new JLabel("Personal");
 		expenseType.setFont(new Font("Tahoma", Font.BOLD, 22));
 		expenseType.setHorizontalAlignment(SwingConstants.CENTER);
-		expenseType.setBounds(10, 11, 664, 26);
+		expenseType.setBounds(10, 12, 664, 26);
 		frmUniBudget.getContentPane().add(expenseType);
 		
 		JLabel lblExpenseType = new JLabel("Expense Type");
@@ -263,6 +280,7 @@ public class BudgetViewer {
 		
 		
 		lblDifferenceSubtotal = new JLabel("£0.00");
+		lblDifferenceSubtotal.setBackground(SystemColor.control);
 		lblDifferenceSubtotal.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblDifferenceSubtotal.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDifferenceSubtotal.setBounds(521, 439, 157, 26);
@@ -325,16 +343,16 @@ public class BudgetViewer {
 		nextBtn.setBounds(509, 488, 32, 32);
 		frmUniBudget.getContentPane().add(nextBtn);
 		
-		JButton btnNewButton = new JButton("Email");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton emailBtn = new JButton("Email");
+		emailBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				  String host="smtp.burawi.tech";  // Host of the email server
-				  final String user="unibudget@burawi.tech"; 
-				  final String password="SZpIvFP3";  
+				  final String host = "smtp.burawi.tech";  // Host of the email server sending the email
+				  final String user = "unibudget@burawi.tech"; // Email for report to be sent from
+				  final String password = "SZpIvFP3";  // password for the email
 //				  User.email = "ioana.kada@bisc.edu.eg";
 //				  User.email = "t268@bisc.edu.eg";
 //				  User.firstName = "Ioana";
-				  String to=User.email; 
+				  String to = User.email; 
 				  
 				   // Assigns the properties to initiate a connection to the SMTP server 
 				   Properties props = new Properties();  
@@ -370,7 +388,7 @@ public class BudgetViewer {
 			         // Creates a multipart message
 			         Multipart multipart = new MimeMultipart();
 
-			         // Set text message part
+			         // adds previous text component part to the message
 			         multipart.addBodyPart(messageBodyPart);
 				     
 				     try {
@@ -407,8 +425,70 @@ public class BudgetViewer {
 				     	}  
 			}
 		});
-		btnNewButton.setBounds(551, 488, 89, 32);
-		frmUniBudget.getContentPane().add(btnNewButton);
+		emailBtn.setBounds(551, 488, 89, 32);
+		frmUniBudget.getContentPane().add(emailBtn);
+		
+		JButton printBtn = new JButton("");
+		printBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 report += "Hi " + User.firstName + ",";
+			     report += "\nPlease find your UniBudget report below.";
+			     report += "\nBUDGET PREPARED FOR " + User.arrayOfUnis[BudgetUniSelector.getUniIndex()-1]; 
+			     for (int i = 0; i < budgetTables.length; i++) {
+					emailDataFetcher(budgetTables[i]);
+				}
+			     
+			     String filename = User.arrayOfUnis[BudgetUniSelector.getUniIndex()-1]+" Budget Report.txt"; 
+			     
+			     try {
+			         File budgetFile = new File(filename); 
+				 	if (budgetFile.delete()) { 
+				 		// Checks to see if file exists and if so delete's it in order to overwrite it with the new data
+				   	  }
+			         budgetFile.createNewFile(); // Creates the file for the report does not need if due to deletion above
+			         
+			         // Writes generated report to the file
+			         FileWriter myWriter = new FileWriter(filename);
+			         myWriter.write(report);
+			         myWriter.close();
+			         
+			         File file = new File ("University of Cambridge Budget Report.txt");
+			     	Desktop desktop = Desktop.getDesktop();
+			     	desktop.open(file);
+			     	Thread.sleep(1000); // This is to give the document time to open so it is in focus to print 
+			     	
+			     	try {
+			     	Robot robot = new Robot();
+			         robot.setAutoDelay(250);
+			         String os = System.getProperty("os.name"); //Checks for user's OS type to ensure the correct key sequence is sent
+			         if(os.contains("Windows")) {
+			         	// Key sequence to print on Windows 
+			 	        robot.keyPress(KeyEvent.VK_CONTROL);
+			 	        robot.keyPress(KeyEvent.VK_P);
+			 	        //Keys are released otherwise they will be pressed until the program closes causing issues for the user
+			 	        robot.keyRelease(KeyEvent.VK_CONTROL);
+			 	        robot.keyRelease(KeyEvent.VK_P);
+			 	        robot.keyPress(KeyEvent.VK_ENTER);
+			         } else if(os.contains("Mac")) {
+			         	// Key sequence to print on MacOS
+			 	        robot.keyPress(KeyEvent.VK_META);  //This is meant to simulate the command key
+			 	        robot.keyPress(KeyEvent.VK_P);
+			 	        robot.keyRelease(KeyEvent.VK_META);
+			 	        robot.keyRelease(KeyEvent.VK_P);
+			 	        robot.keyPress(KeyEvent.VK_ENTER);
+			         }
+			     } catch (AWTException ex) {
+			         ex.printStackTrace();
+			     } 
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			} 
+			     }
+			     
+		});
+		printBtn.setIcon(new ImageIcon("C:\\Users\\H\\Downloads\\printing-text (2).png"));
+		printBtn.setBounds(642, 488, 32, 32);
+		frmUniBudget.getContentPane().add(printBtn);
 		
 	}
 }

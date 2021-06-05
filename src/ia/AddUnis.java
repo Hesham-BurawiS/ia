@@ -212,7 +212,7 @@ public class AddUnis {
 						String formatedUniName = uniName.replaceAll("\\s","%20");
 						
 						String APIkey = "AIzaSyA0SQ2rQ94n57EEJkZ_eKZ6cNdgCCu1r1g";
-						URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address="+formatedUniName+"&key=AIzaSyA0SQ2rQ94n57EEJkZ_eKZ6cNdgCCu1r1g");
+						URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address="+formatedUniName+"&key="+APIkey);
 						System.out.println(url);
 						BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 						String jsonString = "";
@@ -283,9 +283,6 @@ public class AddUnis {
 				 // Inserts data into DB 
 		        String sql = "INSERT INTO choice" + nextChoice + " VALUES (?,?,?,?,?,?,?,?)";
 		        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-		        //TODO Could use arrays to store and loop changing i and storing the other data in an array
-		        //preparedStatement.setString(1, seq.nextVal(););
-		        //currentCity = cityTxt.getText();
 		        
 		        preparedStatement.setInt(1, User.id);		       
 		        preparedStatement.setString(2, codeChoice);

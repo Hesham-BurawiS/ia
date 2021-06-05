@@ -138,7 +138,7 @@ public class ViewUnis {
 		currentUC.setBounds(335, 182, 89, 34);
 		panel.add(currentUC);
 		
-		// Updates the above lables witht the first choice
+		// Updates the above labels with the first choice
 		currentChoice = 1;
 		try {
 			String[] currentUni = User.choice("choice"+currentChoice);
