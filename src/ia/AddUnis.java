@@ -183,15 +183,20 @@ public class AddUnis {
 			public void focusLost(FocusEvent e) {
 				
 				codeChoice = (String) UCASCodeComboBox.getSelectedItem();
-				String [] temp = new String[40]; //Set to 40 to account for all possible venues
-				int count = 0;
-				// Database Connection to verify find uni
+				String [] temp = new String[40]; /*As the total number of venues is still unknown for the specific university 
+				an array named temp is created with a size of 40 which would accommodate every possible size. This is based 
+				on the fact that the University of Oxford has the largest number of venues in the current list of available universities. */
 				Connection conn = null;
 				try {
 				    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
 				    Statement stmt = null;
 				    ResultSet rs = null;
-				    
+				    /*The venues are then retrieved from the database and inserted into the temp array whilst at the same time the solution 
+				     * is counting how many venues have been added through the variable count. Once this is completed a new array named venues 
+				     * is created with the length of count. The solution then cycles through this array populating it with the venues in temp 
+				     * removing the null unused indices. This ensures that the user sees the exact number of venues and is not able to select a 
+				     * null value causing issues.*/
+					int count = 0;
 				    stmt = conn.createStatement();
 				    rs = stmt.executeQuery("SELECT * FROM legacyCodes WHERE LEGACY_CODE = " + "'" + codeChoice + "'");
 				    while (rs.next()) {

@@ -77,6 +77,11 @@ public class BudgetUpdater {
 		try {
 			return Double.valueOf(d);
 		} catch (NumberFormatException e) {
+			/*This function uses the catch statement to ensure that when 
+			 * the user is updating their budget what they enter into the 
+			 * JTextField is actually a number. If it catches 
+			 * a NumberFormatException then the user is notified and allowed 
+			 * to correct the error instead of the application crashing.*/
 			lblError.setText("Please input a number");
 		}
 		return diff;
