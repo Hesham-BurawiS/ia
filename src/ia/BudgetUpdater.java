@@ -68,6 +68,12 @@ public class BudgetUpdater {
 	}
 	
 	public double doubleCaster(String d) {
+		/* 
+		 * This function takes a string and casts it into a double type.
+		 * This function is used when updating the users budget to validate
+		 *  that the data entered is a number and not a string using
+		 *   a try catch block to notify the user if there are issues.
+		 * */
 		try {
 			return Double.valueOf(d);
 		} catch (NumberFormatException e) {

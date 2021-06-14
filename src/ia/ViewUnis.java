@@ -231,13 +231,14 @@ public class ViewUnis {
 				if (removalConfirmation == 0) { // 0 means user has selected yes
 					Connection conn = null;
 					try {
+						//The Statement object is used to execute an SQL statement that uses the DELETE query to remove a university from the users collection in the database.
 					    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
 					    Statement stmt = conn.createStatement();					    					    
 					    stmt.executeUpdate("DELETE FROM choice" + currentChoice + " WHERE id = " + User.id);
 					    User.totalChoices--;
 
 				} catch (SQLException ex) {
-				    // handle any errors
+				    // Handles any errors
 				    System.out.println("SQLException: " + ex.getMessage());
 				    System.out.println("SQLState: " + ex.getSQLState());
 				    System.out.println("VendorError: " + ex.getErrorCode());

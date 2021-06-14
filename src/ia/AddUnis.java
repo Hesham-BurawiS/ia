@@ -47,14 +47,14 @@ public class AddUnis {
 
 	
 	public static String[] legacyComplier() {
-		String [] legacy = new String[371];
+		String [] legacy = new String[371]; //Initialises an array with the maximum length of legacy codes
 		String line = "";  
 		int count = 0;
 		try {
-			File file = new File(AddUnis.class.getResource("/resources/legacy.csv").toURI());
-			BufferedReader br = new BufferedReader(new FileReader(file));  
-			while ((line = br.readLine()) != null) {  //returns a Boolean value  
-				legacy[count] = line;
+			File file = new File(AddUnis.class.getResource("/resources/legacy.csv").toURI()); //Converts csv file into File object
+			BufferedReader br = new BufferedReader(new FileReader(file));  //Prepares file to be parsed 
+			while ((line = br.readLine()) != null) {  //returns a Boolean value to see if there are anymore lines in the file				
+				legacy[count] = line; //Loops through file storing legacy codes to initialised array
 				count++;
 			}  
 		}   
@@ -266,7 +266,6 @@ public class AddUnis {
 					JOptionPane.showMessageDialog(frmUnibudget, "You've reached the maximum number of choices (5)", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				//TODO Check if this option is already added or maybe nah
 				try {
 				Connection conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
 				

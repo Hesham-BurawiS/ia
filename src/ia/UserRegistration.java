@@ -174,9 +174,13 @@ public class UserRegistration extends User {
 					return;
 				}
 				
-				// Password match confirmation 
+				// Password match validation 
 				else if (unHashedPassword.equals(passwordConfirmation)) {
 					hashedPassword = BCrypt.hashpw(unHashedPassword, BCrypt.gensalt()); 
+					/* The hash is created by calling the BCrypt.hashpw() function with the parameters of the unhashed password and a 
+					 * BCrypt generated salt. This helps strengthen the hash function preventing attacks such 
+					 * as a rainbow attack and as the salt is not directly passed to the function it becomes 
+					 * less susceptible to attack.*/
 					notificationLbl.setText("");
 					}
 				else {
@@ -185,10 +189,13 @@ public class UserRegistration extends User {
 				}
 				
 				try {
-				   User newUser = new User(email,firstName,lastName,hashedPassword);
+					/*Values entered by the user are used to instantiate a new User object,
+				    its properties being used to insert values into the database for permanent storage purposes.*/ 
+				   User newUser = new User(email,firstName,lastName,hashedPassword); 
+				   // The JDBC connector is used to create a database Connection object.
 				   Connection conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget", "hesho" , "cQnfD23b8tiYk!7h");
 				    
-				    // Inserts data into DB 
+				    // An SQL statement is built using prepared statements to insert the users data into the database once it has been validated.
 			        String sql = "INSERT INTO users " + "VALUES (default,?, ?, ?, ?)";
 			        PreparedStatement preparedStatement = conn.prepareStatement(sql);
 			        preparedStatement.setString(1, newUser.email);

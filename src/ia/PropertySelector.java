@@ -83,8 +83,7 @@ public class PropertySelector {
 		uniSelLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		uniSelLbl.setBounds(20, 41, 103, 19);
 		frmUniBudget.getContentPane().add(uniSelLbl);
-//		User.arrayOfUnis = new String[1];
-//		User.arrayOfUnis[0] = "QMUL";
+
 		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(User.arrayOfUnis));
 		comboBox.setBounds(119, 44, 305, 22);
@@ -95,25 +94,26 @@ public class PropertySelector {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String uniName = (String) comboBox.getSelectedItem();
-					formatedUniName = uniName.replaceAll("\\s","%20");
+					formatedUniName = uniName.replaceAll("\\s","%20"); // All whitespace is replaces by %20 to allow a URL to be built for use with the API
 					
 					String APIkey = "AIzaSyA0SQ2rQ94n57EEJkZ_eKZ6cNdgCCu1r1g";
 					URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address="+formatedUniName+"&key="+APIkey);
-					System.out.println(url);
 					BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 					String jsonString = "";
 					String strTemp = "";
 					
+					// The output from the API is copied from the BufferedReader into a String to allow it to be read
 					while (null != (strTemp = br.readLine())) {
 						jsonString +=  strTemp;
 					}
 					
+					// A Gson JSONObject is built with all the dataJSON is then sorted through the various arrays until the post code is reached
 					JsonObject jsonObject = new JsonParser().parse(jsonString).getAsJsonObject();
 					JsonArray resultsArray = jsonObject.getAsJsonArray("results");
 					JsonObject resultsObject = (JsonObject) resultsArray.get(0);
 					JsonArray addressArray = resultsObject.getAsJsonArray("address_components");
-					int addArrLen = addressArray.size() - 1; // Different places have a different array size so this is to always get the post code
-					uniPostalCode = addressArray.get(addArrLen).getAsJsonObject().get("long_name").getAsString();
+					int addArrLen = addressArray.size() - 1; // Different locations have a different array size so this is to always get the post code 
+					uniPostalCode = addressArray.get(addArrLen).getAsJsonObject().get("long_name").getAsString();  // Post code is stored for use later
 					 PropertyVariablesSelection.main(null);
 					 frmUniBudget.dispose();
 					} catch (Exception ex) {

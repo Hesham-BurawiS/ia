@@ -68,11 +68,12 @@ public class UserLogin extends User{
 		// Filled in Data check
 		if (email.isBlank() || unHashedPassword.isBlank() ) {
 			notificationLbl.setText("Please fill in all fields!");
-			//TODO Stop Function
+			return;
 		}
 		// Email Validation
 		else if (!email.matches(regex)) {
 			notificationLbl.setText("Please enter a valid email!");
+			return;
 		}
 		else { // Used to reset label once conditions are met
 			notificationLbl.setText("");
@@ -81,26 +82,25 @@ public class UserLogin extends User{
 		Connection conn = null;
 		try {
 		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");
-		    Statement stmt = null;
-		    ResultSet rs = null;
-		    //User user = new User();
+		    Statement stmt = null; //Statement to execute SQL Queries in DB
+		    ResultSet rs = null; // ResultSet to store data returned from DB
 		    
 		    stmt = conn.createStatement();
-		    rs = stmt.executeQuery("SELECT * FROM users WHERE email = " + "'" + email + "'");
-		    while (rs.next()) {
-		    	 validEmail = true;
-		         hashedPassword = rs.getString("password");
+		    rs = stmt.executeQuery("SELECT * FROM users WHERE email = " + "'" + email + "'");  // Store results of the query	
+		    while (rs.next()) { //Loop through returned data
+		    	 validEmail = true;  /* If data is returned the email must be valid and password validation can proceed */
+		         hashedPassword = rs.getString("password");  //Reads the hashed password from the returned record
 		        if(!BCrypt.checkpw(unHashedPassword, hashedPassword)) {
 		        	notificationLbl.setText("Invalid email or password!");
 		        }
 		        else {
 		        	notificationLbl.setText("");	
-		        	// Set user data but do I want to put it in user file and use as global var and build an object?
-		        	//User.main(null);
 		        	User.firstName = rs.getString("firstName");
 		        	User.lastName = rs.getString("lastName");
-		        	User.email = email; // The variable is already used here that's why User.
+		        	User.email = email; // The variable is already used in this program that's why User is explicitly mentioned.
 		        	User.id = rs.getInt("id");
+		        	/* An array with the length of the total number of universities the user has is created below 
+		        	 * This is then used below to create an array with all the users choices stored by their name*/
 		        	int choiceCount = 1;
 		    		User.totalChoices = 5; 
 		    		String UniNames [] = new String [5];
@@ -108,11 +108,10 @@ public class UserLogin extends User{
 		    			String [] arr = choice("choice"+choiceCount);
 		    			if(arr[0] == null) {
 		    				totalChoices--; }
-		    			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer ex
+		    			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer exception
 		    			choiceCount++;			
 		    		}
 		    		
-
 		    		User.arrayOfUnis = new String[totalChoices];
 		    		for (int i = 0; i < totalChoices; i++) {
 		    			User.arrayOfUnis[i] = UniNames[i];

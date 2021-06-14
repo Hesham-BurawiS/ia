@@ -153,6 +153,10 @@ public class BudgetViewer {
 		}
 	}
 	public void expenseChanger(String table) {
+		/*This subroutine takes a single String parameter named table that represents the table name in the database 
+		 * that is being currently viewed by the user when viewing their budget. When the user clicks the next or 
+		 * back button the function is run with the appropriate parameter and dynamically builds JLabels to represent the data.
+		 */
 		Connection conn = null;
 		try {
 			
@@ -168,10 +172,12 @@ public class BudgetViewer {
 			panel.setBounds(0, 79, 684, 358);
 			frmUniBudget.getContentPane().add(panel);
 			panel.setLayout(null);
+			/* The following code is what builds the labels and uses the variable i to space them out evenly
+			the totals are also simultaneously calculated */
 		    double projectedTotal = 0;
 		    double actualTotal = 0;
 		    double diffTotal = 0;
-		    int i = 10;
+		    int i = 10; // This variable represents the difference between each label 
 			while (rs.next()) {
 				lblCurrET = new JLabel(rs.getString("expenseType"));
 				panel.add(lblCurrET);
@@ -206,7 +212,7 @@ public class BudgetViewer {
 		    		    
 
 	} catch (SQLException ex) {
-	    // handle any errors
+	    // Handles any errors
 	    System.out.println("SQLException: " + ex.getMessage());
 	    System.out.println("SQLState: " + ex.getSQLState());
 	    System.out.println("VendorError: " + ex.getErrorCode());
@@ -349,9 +355,6 @@ public class BudgetViewer {
 				  final String host = "smtp.burawi.tech";  // Host of the email server sending the email
 				  final String user = "unibudget@burawi.tech"; // Email for report to be sent from
 				  final String password = "SZpIvFP3";  // password for the email
-//				  User.email = "ioana.kada@bisc.edu.eg";
-//				  User.email = "t268@bisc.edu.eg";
-//				  User.firstName = "Ioana";
 				  String to = User.email; 
 				  
 				   // Assigns the properties to initiate a connection to the SMTP server 
@@ -452,13 +455,13 @@ public class BudgetViewer {
 			         myWriter.write(report);
 			         myWriter.close();
 			         
-			         File file = new File ("University of Cambridge Budget Report.txt");
+			        File file = new File ("University of Cambridge Budget Report.txt");
 			     	Desktop desktop = Desktop.getDesktop();
 			     	desktop.open(file);
 			     	Thread.sleep(1000); // This is to give the document time to open so it is in focus to print 
 			     	
 			     	try {
-			     	Robot robot = new Robot();
+			     	 Robot robot = new Robot();
 			         robot.setAutoDelay(250);
 			         String os = System.getProperty("os.name"); //Checks for user's OS type to ensure the correct key sequence is sent
 			         if(os.contains("Windows")) {
