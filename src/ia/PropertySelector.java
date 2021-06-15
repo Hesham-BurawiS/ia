@@ -25,7 +25,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class PropertySelector {
+public class PropertySelector extends User{
 
 	private JFrame frmUniBudget;
 	private JComboBox comboBox;
@@ -51,8 +51,9 @@ public class PropertySelector {
 
 	/**
 	 * Create the application.
+	 * @throws SQLException 
 	 */
-	public PropertySelector() {
+	public PropertySelector() throws SQLException {
 		initialize();
 	}
 	
@@ -64,8 +65,9 @@ public class PropertySelector {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws SQLException 
 	 */
-	private void initialize() {
+	private void initialize() throws SQLException {
 		frmUniBudget = new JFrame();
 		frmUniBudget.setBounds(100, 100, 450, 180);
 		frmUniBudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
@@ -83,7 +85,41 @@ public class PropertySelector {
 		uniSelLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		uniSelLbl.setBounds(20, 41, 103, 19);
 		frmUniBudget.getContentPane().add(uniSelLbl);
-
+		
+		/* An array with the length of the total number of universities the user has is created below 
+    	 * This is then used below to create an array with all the users choices stored by their name*/
+    	int choiceCount = 1;
+		User.totalChoices = 5; 
+		String UniNames [] = new String [5];
+		while (choiceCount <=5) {
+			String [] arr = choice("choice"+choiceCount);
+			if(arr[0] == null) {
+				totalChoices--; }
+			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer exception
+			choiceCount++;			
+		}
+		
+		User.arrayOfUnis = new String[totalChoices];
+		for (int i = 0; i < totalChoices; i++) {
+			User.arrayOfUnis[i] = UniNames[i];
+		}
+		
+		if(UniNames[0] != null) {
+			User.choice1 = UniNames[0];
+		}
+		if(UniNames[1] != null) {
+			User.choice2 = UniNames[1];
+		}
+		if(UniNames[2] != null) {
+			User.choice3 = UniNames[2];
+		}
+		if(UniNames[3] != null) {
+			User.choice4 = UniNames[3];
+		}
+		if(UniNames[4] != null) {
+			User.choice5 = UniNames[4];
+		}
+		
 		comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(User.arrayOfUnis));
 		comboBox.setBounds(119, 44, 305, 22);

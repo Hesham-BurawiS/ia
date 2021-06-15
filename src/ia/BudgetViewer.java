@@ -108,7 +108,7 @@ public class BudgetViewer {
 	}
 	
 	protected String stringFiller(String text) {
-			/* This method ensures that the given string has a total of 35 characters if less, whitespace is addedd this is make sure everything is
+			/* This method ensures that the given string has a total of 35 characters if less, whitespace is added this is make sure everything is
 			 even in the report the new string is returned*/
 		    char[] array = new char[35];
 		    char[] arrayText = text.toCharArray();
@@ -122,7 +122,6 @@ public class BudgetViewer {
 	
 	public void emailDataFetcher(String table) {
 		try {
-			User.id = 12;
 		 Connection conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");				    					    
 		    String sql = "SELECT * FROM " + table + " WHERE id = '" + User.id + "'AND uniChoice = '" + BudgetUniSelector.getUniIndex()+"'";
 		    Statement stmt = null;
@@ -137,8 +136,6 @@ public class BudgetViewer {
 		    report += "\n\n" + table.toUpperCase() +"\n";
 		    report += "\n"+stringFiller("Expense Type")+stringFiller("Projected Cost")+stringFiller("Actual Cost")+stringFiller("Difference");
 			while (rs.next()) {
-				//System.out.println(rs.getString(3));
-				System.out.println(rs.getString("expenseType"));
 				currentET = rs.getString("expenseType");
 				currentPC = rs.getString("projectedCost");
 				currentAC = rs.getString("actualCost");
@@ -303,7 +300,7 @@ public class BudgetViewer {
 				frmUniBudget.dispose();
 			}
 		});
-		updateBtn.setBounds(354, 488, 157, 32);
+		updateBtn.setBounds(377, 488, 134, 32);
 		frmUniBudget.getContentPane().add(updateBtn);
 		
 		JButton menuBtn = new JButton("Menu");
@@ -330,7 +327,7 @@ public class BudgetViewer {
 		backBtn.setForeground(SystemColor.control);
 		backBtn.setBackground(SystemColor.control);
 		backBtn.setIcon(new ImageIcon(BudgetViewer.class.getResource("/resources/Back Chevron.png")));
-		backBtn.setBounds(323, 488, 32, 32);
+		backBtn.setBounds(347, 488, 32, 32);
 		frmUniBudget.getContentPane().add(backBtn);
 		
 		JButton nextBtn = new JButton("");
@@ -352,7 +349,7 @@ public class BudgetViewer {
 		JButton emailBtn = new JButton("Email");
 		emailBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				  final String host = "smtp.burawi.tech";  // Host of the email server sending the email
+				  final String host = "208.91.199.223";  // Host of the email server sending the email
 				  final String user = "unibudget@burawi.tech"; // Email for report to be sent from
 				  final String password = "SZpIvFP3";  // password for the email
 				  String to = User.email; 
@@ -455,7 +452,7 @@ public class BudgetViewer {
 			         myWriter.write(report);
 			         myWriter.close();
 			         
-			        File file = new File ("University of Cambridge Budget Report.txt");
+			        File file = new File (User.arrayOfUnis[BudgetUniSelector.getUniIndex()-1]+" Budget Report.txt");
 			     	Desktop desktop = Desktop.getDesktop();
 			     	desktop.open(file);
 			     	Thread.sleep(1000); // This is to give the document time to open so it is in focus to print 
@@ -489,9 +486,44 @@ public class BudgetViewer {
 			     }
 			     
 		});
-		printBtn.setIcon(new ImageIcon("C:\\Users\\H\\Downloads\\printing-text (2).png"));
+		printBtn.setIcon(new ImageIcon(BudgetViewer.class.getResource("/resources/Printing Icon.png")));
 		printBtn.setBounds(642, 488, 32, 32);
 		frmUniBudget.getContentPane().add(printBtn);
+		
+		JButton reportBtn = new JButton("Gen Report");
+		reportBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				report += "Hi " + User.firstName + ",";
+			     report += "\nPlease find your UniBudget report below.";
+			     report += "\nBUDGET PREPARED FOR " + User.arrayOfUnis[BudgetUniSelector.getUniIndex()-1]; 
+			     for (int i = 0; i < budgetTables.length; i++) {
+					emailDataFetcher(budgetTables[i]);
+				}
+			     
+			     String filename = User.arrayOfUnis[BudgetUniSelector.getUniIndex()-1]+" Budget Report.txt"; 
+			     
+			     try {
+			         File budgetFile = new File(filename); 
+				 	if (budgetFile.delete()) { 
+				 		// Checks to see if file exists and if so delete's it in order to overwrite it with the new data
+				   	  }
+			         budgetFile.createNewFile(); // Creates the file for the report does not need if due to deletion above
+			         
+			         // Writes generated report to the file
+			         FileWriter myWriter = new FileWriter(filename);
+			         myWriter.write(report);
+			         myWriter.close();
+			         
+			         File file = new File (User.arrayOfUnis[BudgetUniSelector.getUniIndex()-1]+" Budget Report.txt");
+				     Desktop desktop = Desktop.getDesktop();
+				     desktop.open(file);
+			} catch (IOException ex) {
+		         ex.printStackTrace();
+		     } 
+			}
+		});
+		reportBtn.setBounds(224, 488, 110, 32);
+		frmUniBudget.getContentPane().add(reportBtn);
 		
 	}
 }

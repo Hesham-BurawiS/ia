@@ -218,7 +218,6 @@ public class AddUnis {
 						
 						String APIkey = "AIzaSyA0SQ2rQ94n57EEJkZ_eKZ6cNdgCCu1r1g";
 						URL url = new URL("https://maps.googleapis.com/maps/api/geocode/json?address="+formatedUniName+"&key="+APIkey);
-						System.out.println(url);
 						BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 						String jsonString = "";
 						String strTemp = "";
@@ -266,7 +265,6 @@ public class AddUnis {
 		JButton addBtn = new JButton("Add");
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
-				//TODO Add to total uni count
 				if (User.totalChoices==5) {
 					JOptionPane.showMessageDialog(frmUnibudget, "You've reached the maximum number of choices (5)", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -499,7 +497,8 @@ public class AddUnis {
 		cancelBtn.setEnabled(false);
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO Fill
+				MainMenu.main(null);
+				frmUnibudget.dispose();
 			}
 		});
 		cancelBtn.setBounds(286, 227, 89, 23);

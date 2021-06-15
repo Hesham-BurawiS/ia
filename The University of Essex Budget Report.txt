@@ -1,20 +1,20 @@
-Hi Ioana,
+Hi John ,
 Please find your UniBudget report below.
-BUDGET PREPARED FOR Bradford College
+BUDGET PREPARED FOR The University of Essex
 
 INCOME
 
 Expense Type                       Projected Cost                     Actual Cost                        Difference                         
-Income 1                           100                                120                                -20                                
-Other                              300                                400                                0                                  
+Income 1                           3000                               3500                               -500                               
+Other                              0                                  0                                  0                                  
 
 HOUSING
 
 Expense Type                       Projected Cost                     Actual Cost                        Difference                         
-Rent                               700                                800                                -100                               
-Phone                              0                                  0                                  0                                  
+Rent                               1000                               1000                               0                                  
+Phone                              60                                 50                                 10                                 
 Electricity                        0                                  0                                  0                                  
-Gas                                100                                200                                -100                               
+Gas                                0                                  0                                  0                                  
 Water                              0                                  0                                  0                                  
 Cable                              0                                  0                                  0                                  
 Maintenance                        0                                  0                                  0                                  
@@ -28,7 +28,7 @@ Movies                             0                                  0         
 Concerts                           0                                  0                                  0                                  
 Sporting Events                    0                                  0                                  0                                  
 Live Theatre                       0                                  0                                  0                                  
-Streaming Subscriptions            25                                 0                                  25                                 
+Streaming Subscriptions            10                                 10                                 10                                 
 Other                              0                                  0                                  0                                  
 
 TRANSPORTATION
@@ -89,23 +89,23 @@ Clothing                           0                                  0         
 Dry Cleaning                       0                                  0                                  0                                  
 Health Club                        0                                  0                                  0                                  
 Organisation dues                  0                                  0                                  0                                  
-Other                              0                                  0                                  0                                  Hi Ioana,
+Other                              0                                  0                                  0                                  Hi John ,
 Please find your UniBudget report below.
-BUDGET PREPARED FOR Bradford College
+BUDGET PREPARED FOR The University of Essex
 
 INCOME
 
 Expense Type                       Projected Cost                     Actual Cost                        Difference                         
-Income 1                           100                                120                                -20                                
-Other                              300                                400                                0                                  
+Income 1                           3000                               3500                               -500                               
+Other                              0                                  0                                  0                                  
 
 HOUSING
 
 Expense Type                       Projected Cost                     Actual Cost                        Difference                         
-Rent                               700                                800                                -100                               
-Phone                              0                                  0                                  0                                  
+Rent                               1000                               1000                               0                                  
+Phone                              60                                 50                                 10                                 
 Electricity                        0                                  0                                  0                                  
-Gas                                100                                200                                -100                               
+Gas                                0                                  0                                  0                                  
 Water                              0                                  0                                  0                                  
 Cable                              0                                  0                                  0                                  
 Maintenance                        0                                  0                                  0                                  
@@ -119,7 +119,7 @@ Movies                             0                                  0         
 Concerts                           0                                  0                                  0                                  
 Sporting Events                    0                                  0                                  0                                  
 Live Theatre                       0                                  0                                  0                                  
-Streaming Subscriptions            25                                 0                                  25                                 
+Streaming Subscriptions            10                                 10                                 10                                 
 Other                              0                                  0                                  0                                  
 
 TRANSPORTATION
@@ -180,23 +180,23 @@ Clothing                           0                                  0         
 Dry Cleaning                       0                                  0                                  0                                  
 Health Club                        0                                  0                                  0                                  
 Organisation dues                  0                                  0                                  0                                  
-Other                              0                                  0                                  0                                  Hi Ioana,
+Other                              0                                  0                                  0                                  Hi John ,
 Please find your UniBudget report below.
-BUDGET PREPARED FOR Bradford College
+BUDGET PREPARED FOR The University of Essex
 
 INCOME
 
 Expense Type                       Projected Cost                     Actual Cost                        Difference                         
-Income 1                           100                                120                                -20                                
-Other                              300                                400                                0                                  
+Income 1                           3000                               3500                               -500                               
+Other                              0                                  0                                  0                                  
 
 HOUSING
 
 Expense Type                       Projected Cost                     Actual Cost                        Difference                         
-Rent                               700                                800                                -100                               
-Phone                              0                                  0                                  0                                  
+Rent                               1000                               1000                               0                                  
+Phone                              60                                 50                                 10                                 
 Electricity                        0                                  0                                  0                                  
-Gas                                100                                200                                -100                               
+Gas                                0                                  0                                  0                                  
 Water                              0                                  0                                  0                                  
 Cable                              0                                  0                                  0                                  
 Maintenance                        0                                  0                                  0                                  
@@ -210,7 +210,7 @@ Movies                             0                                  0         
 Concerts                           0                                  0                                  0                                  
 Sporting Events                    0                                  0                                  0                                  
 Live Theatre                       0                                  0                                  0                                  
-Streaming Subscriptions            25                                 0                                  25                                 
+Streaming Subscriptions            10                                 10                                 10                                 
 Other                              0                                  0                                  0                                  
 
 TRANSPORTATION

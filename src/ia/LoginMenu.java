@@ -46,7 +46,6 @@ public class LoginMenu {
 	 */
 	private void initialize() {
 		frmUnibudget = new JFrame();
-		frmUnibudget.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\hesho\\Downloads\\Iconsmind-Outline-Student-Hat-2.ico"));
 		frmUnibudget.setTitle("UniBudget");
 		frmUnibudget.setBounds(100, 100, 460, 300);
 		frmUnibudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

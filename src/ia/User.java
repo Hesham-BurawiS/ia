@@ -46,7 +46,7 @@ public class User {
 	}
 	public static String[] choice(String table) throws SQLException {
 		String[] choiceArr = new String [8];
-		String sql = "SELECT * FROM " + table + " WHERE id = " + id; //TODO remove this when in prod
+		String sql = "SELECT * FROM " + table + " WHERE id = " + id; 
 		Connection conn = null;
 		try {
 		    conn = DriverManager.getConnection("jdbc:mysql://db.burawi.tech:3306/unibudget?verifyServerCertificate=false&useSSL=true", "hesho" , "cQnfD23b8tiYk!7h");

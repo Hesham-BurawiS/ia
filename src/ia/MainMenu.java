@@ -45,9 +45,8 @@ public class MainMenu extends User{
 	 */
 	private void initialize() {
 		frmUnibudget = new JFrame();
-		frmUnibudget.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\hesho\\Downloads\\Iconsmind-Outline-Student-Hat-2.ico"));
 		frmUnibudget.setTitle("UniBudget");
-		frmUnibudget.setBounds(100, 100, 450, 350);
+		frmUnibudget.setBounds(100, 100, 450, 290);
 		frmUnibudget.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmUnibudget.getContentPane().setLayout(null);
 		
@@ -72,8 +71,8 @@ public class MainMenu extends User{
 			public void actionPerformed(ActionEvent e) {
 				if (User.totalChoices != 0 ) {
 				ViewUnis.main(null);
-				frmUnibudget.dispose(); }
-				else {
+				frmUnibudget.dispose(); 
+				} else {
 					JOptionPane.showMessageDialog(frmUnibudget, "You currently have no universities.\n Please add one first.", 
 							"Error", JOptionPane.ERROR_MESSAGE);
 				}
@@ -85,8 +84,13 @@ public class MainMenu extends User{
 		JButton budgetBtn = new JButton("Budget");
 		budgetBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BudgetUniSelector.main(null);
-				frmUnibudget.dispose();
+				if (User.totalChoices != 0 ) {
+					BudgetUniSelector.main(null);
+					frmUnibudget.dispose(); 
+				} else {
+						JOptionPane.showMessageDialog(frmUnibudget, "You currently have no universities.\n Please add one first.", 
+								"Error", JOptionPane.ERROR_MESSAGE);
+					}
 				
 			}
 		});
@@ -98,31 +102,24 @@ public class MainMenu extends User{
 			public void actionPerformed(ActionEvent e) {
 				LoginMenu.main(null);
 				frmUnibudget.dispose();
-				//TODO Set everything in user to NUll otherwise if they have a value then it could overlap
-				// Tested for viewUnis and no need because it's linked to the id
 			}
 		});
-		logoutBtn.setBounds(153, 277, 130, 23);
+		logoutBtn.setBounds(150, 212, 130, 23);
 		frmUnibudget.getContentPane().add(logoutBtn);
-		
-		JButton spareBtn = new JButton("");
-		spareBtn.setEnabled(false);
-		spareBtn.setBounds(294, 240, 130, 23);
-		frmUnibudget.getContentPane().add(spareBtn);
 		
 		JButton viewPropertiesBtn = new JButton("View Properties");
 		viewPropertiesBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PropertySelector.main(null);
-				frmUnibudget.setVisible(false);
+				if (User.totalChoices != 0 ) {
+					PropertySelector.main(null);
+					frmUnibudget.setVisible(false); 
+				} else {
+						JOptionPane.showMessageDialog(frmUnibudget, "You currently have no universities.\n Please add one first.", 
+								"Error", JOptionPane.ERROR_MESSAGE);
+					}				
 			}
 		});
 		viewPropertiesBtn.setBounds(294, 145, 130, 23);
 		frmUnibudget.getContentPane().add(viewPropertiesBtn);
-		
-		JButton removeUniBtn = new JButton("Remove a Uni");
-		removeUniBtn.setEnabled(false);
-		removeUniBtn.setBounds(10, 240, 130, 23);
-		frmUnibudget.getContentPane().add(removeUniBtn);
 	}
 }

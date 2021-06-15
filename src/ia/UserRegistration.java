@@ -207,30 +207,20 @@ public class UserRegistration extends User {
 				    
 			        notificationLbl.setForeground(Color.GREEN);
 			        notificationLbl.setText("Successfully registered!");
-			        NotifWindow.main(null);
 			        frmUnibudget.dispose();
 				   
 				} catch (SQLException ex) {
 				    // handle any errors
 				    System.out.println("SQLException: " + ex.getMessage());
-				    System.out.println("SQLState: " + ex.getSQLState());
-				    System.out.println("VendorError: " + ex.getErrorCode());
+				    System.out.println("SQLState: " +  ex.getSQLState());
+				    System.out.println("VendorError: " +  ex.getErrorCode());
 				}
 			}
 		});
 		registerBtn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUnibudget.getContentPane().add(registerBtn);
 		
-		frmUnibudget.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				LoginMenu.main(null);
-			}
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				LoginMenu.main(null);
-			}
-		});
+
 		
 		
 		

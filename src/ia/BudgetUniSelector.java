@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.SQLException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -19,7 +20,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class BudgetUniSelector {
+public class BudgetUniSelector extends User{
 
 	private JFrame frmUniBudget;
 	private JComboBox comboBox;
@@ -43,8 +44,9 @@ public class BudgetUniSelector {
 
 	/**
 	 * Create the application.
+	 * @throws SQLException 
 	 */
-	public BudgetUniSelector() {
+	public BudgetUniSelector() throws SQLException {
 		initialize();
 	}
 	
@@ -54,8 +56,9 @@ public class BudgetUniSelector {
 	
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws SQLException 
 	 */
-	private void initialize() {
+	private void initialize() throws SQLException {
 		frmUniBudget = new JFrame();
 		frmUniBudget.setTitle("UniBudget");
 		frmUniBudget.setBounds(100, 100, 450, 180);
@@ -72,7 +75,41 @@ public class BudgetUniSelector {
 		uniSelLbl.setBounds(20, 44, 103, 19);
 		uniSelLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmUniBudget.getContentPane().add(uniSelLbl);
-
+		
+		/* An array with the length of the total number of universities the user has is created below 
+    	 * This is then used below to create an array with all the users choices stored by their name*/
+    	int choiceCount = 1;
+		User.totalChoices = 5; 
+		String UniNames [] = new String [5];
+		while (choiceCount <=5) {
+			String [] arr = choice("choice"+choiceCount);
+			if(arr[0] == null) {
+				totalChoices--; }
+			UniNames[choiceCount-1] = arr[2]; // Must have intermediate array to avoid null pointer exception
+			choiceCount++;			
+		}
+		
+		User.arrayOfUnis = new String[totalChoices];
+		for (int i = 0; i < totalChoices; i++) {
+			User.arrayOfUnis[i] = UniNames[i];
+		}
+		
+		if(UniNames[0] != null) {
+			User.choice1 = UniNames[0];
+		}
+		if(UniNames[1] != null) {
+			User.choice2 = UniNames[1];
+		}
+		if(UniNames[2] != null) {
+			User.choice3 = UniNames[2];
+		}
+		if(UniNames[3] != null) {
+			User.choice4 = UniNames[3];
+		}
+		if(UniNames[4] != null) {
+			User.choice5 = UniNames[4];
+		}
+		
 		comboBox = new JComboBox();
 		comboBox.setBounds(119, 44, 305, 22);
 		comboBox.setModel(new DefaultComboBoxModel(User.arrayOfUnis));
